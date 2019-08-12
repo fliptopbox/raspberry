@@ -5,6 +5,7 @@ root="./images/"
 today=$(date +"%Y/%m/%d/")
 dest="$root$today"
 prefix="still"
+delay=$1
 
 mkdir -p $dest
 
@@ -26,6 +27,7 @@ next=`printf %08d $((current + 1))`
 filename="$prefix-$next.jpg"
 nextfile="$dest$filename"
 
+raspistill -ISO 100 -q 100 -o $nextfile
 
-echo "$nextfile ($free)"
-raspistill -q 100 -o $nextfile
+now=$(date +"%H:%M:%S")
+echo "$nextfile ($free) $now $delay"
