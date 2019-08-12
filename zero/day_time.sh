@@ -23,8 +23,9 @@ update=$1
 lat=51.5465589
 lng=-0.0352543
 
+PWD=`pwd`
 apiurl="https://api.sunrise-sunset.org/json?lat=$lat&lng=$lng&date=today"
-today="./sunrise-sunset.json"
+today="$PWD/sunrise-sunset.json"
 
 # time offset to before/after the sunrise/sunset event
 offset="90 minutes"
@@ -33,7 +34,7 @@ now=`date +"%H%M%S"`
 # The API call only needs to update once per day
 # the $update value is an argument sent by ./main.sh
 # if the JSON does not exist then call the API
-if [[ $update == "true" ||  ! -f $today ]]; then
+if [ ! -f $today ] || [ ! -s $update ]; then
     wget $apiurl -O - > $today
 fi
 
@@ -41,8 +42,8 @@ fi
 json=`cat $today | sed -r 's/.*("civ[^,]+").*("civ[^,]+").*/\1;\2/g'`
 
 # extract the respective time values
-read sunrise <<< $(echo $json | awk -F";" '{print $1}' | sed -r 's/.*"([^\s]+)".*/\1/g')
-read sunset <<< $(echo $json | awk -F";" '{print $2}' | sed -r 's/.*"([^\s]+)".*/\1/g')
+sunrise=$(echo $json | awk -F";" '{print $1}' | sed -r 's/.*"([^\s]+)".*/\1/g')
+sunset=$(echo $json | awk -F";" '{print $2}' | sed -r 's/.*"([^\s]+)".*/\1/g')
 
 
 # Convert the AM/PM time to 24hour time and extract the time value as long (eg. 0345512)
@@ -56,4 +57,4 @@ else
     daytime=0
 fi
 
-echo "sunrise" $sunrise "sunset" $sunset "now" $now "daytime" $daytime
+echo "sunrise" $sunrise "sunset" $sunset "now" $now "daytime" $daytime "update" $update

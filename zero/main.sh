@@ -13,41 +13,49 @@
 #   1.  Runs and infinte loop that takes a photo
 #   2.  Creates the daily folder destination
 #   3.  Once a day grabs the sunrise-sunset.json
+#   4.  Determines if the camera should sleep
 #
 #
 #
-#
 
 
 
 
-# ffmpeg -f concat -safe 0 -i <(find images/ -regex ".*jpg$" -printf "file `pwd`/%p\n" | sort -V) -vf scale=640x480 text.mkv
 
-# One photo every 30 minutes
-#z=1800
+# One photo every Nth minute
+minutes=2
 
-# One photo every 15 minutes
-z=60
+# Sleep time in seconds
+zzz=$(( $minutes*60 ))
 
-# Set time range
-hour=$(date +"%H")
-late="23"
-early="03"
-
-awake=$(echo `sh ./day_time.sh` | awk '{print $8}')
-echo "AWAKE: $awake"
+# Image destination (relative)
+root="./images/"
 
 
 while true
 do
 
-    if [ "$hour" -lt "$late" ] && [ "$hour" -gt "$early" ]; then
-        sh ./single.sh "$z"
-        sh ./stats.sh "$z"
-    else
-        echo "Sleeping ... $hour ($early-$late) $(date)"
+
+    refresh=""
+    today=$(date +"%Y/%m/%d/")
+    dest="$root$today"
+
+    if [ ! -d $dest ]; then
+        echo "Creating destination: $dest"
+        mkdir -p $dest
+        refresh="true"
     fi
 
-    sleep "${z}s"
+    daytime=$(sh day_time.sh $refresh)
+    awake=$(echo $daytime | awk '{print $8}')
+
+    if [ "$awake" -eq "1" ]; then
+        sh ./single.sh "$zzz"
+        sh ./stats.sh "$zzz"
+    else
+        echo "Sleeping ... $daytime"
+    fi
+
+    sleep "${zzz}s"
 
 done

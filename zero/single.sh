@@ -30,4 +30,4 @@ nextfile="$dest$filename"
 raspistill -ISO 100 -q 100 -o $nextfile
 
 now=$(date +"%H:%M:%S")
-echo "$nextfile ($free) $now $delay"
+echo "$nextfile ($free) $now ${delay}s"
