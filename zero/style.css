@@ -1,20 +1,84 @@
+ul {
+    margin: 0;
+    padding:0;
+    font-size: 14px;
+    position: relative;
+}
+
+li {
+    font-size: 1em;
+    display: inline-block;
+    width: 6em;
+    height: 2em;
+    padding: 4px;
+    margin: 2px;
+    border: 1px solid white;
+    opacity: 0.1;
+}
+
+li.selected,
+li:hover {
+    opacity: 1;
+    background: rgba(0,0,0,0.5);
+    cursor: pointer;
+}
+
 body {
     font-family: arial;
     padding: 0;
     margin: 0;
-    font-size: 14px;
+    background: black;
+    color: white;
+    font-size: 0.5em;
 }
 
-img {
+#progress {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    height: 1px;
+    border: 1px solid black;
+    background: white;
+    width: 0%;
+}
+#progress.go{
     width:100%;
-    display:block;
+    transition-property: width;
+    transition-duration: var(--ms-delay);
+    transition-timing-function: linear;
+
 }
 
 #ts {
+    font-size: 2em;
     position: absolute;
     z-index: 2;
     top: 0;
     margin: 0;
-    padding: 0;
+    padding: 14px;
+}
 
+#ts em {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border-radius: 1em;
+    background: white;
+    margin: 0 3px;
+}
+
+#ts em.red { background-color: red; }
+#ts em.orange { background-color: orange; }
+#ts em.green { background-color: green; }
+
+#main {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 0;
+    background-size: cover;
+    background-position: 50% 50%;
 }
