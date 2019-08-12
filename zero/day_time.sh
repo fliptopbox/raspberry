@@ -50,7 +50,6 @@ sunrise=$(date -d "$sunrise-$offset" | awk '{print $4}' | sed -r s/\://g)
 sunset=$(date -d "$sunset+$offset" | awk '{print $4}' | sed -r s/\://g)
 
 # determine if currently between sunrise/sunset
-sunset="170000"
 if [ $now -gt $sunrise -a $now -lt $sunset ]; then
     daytime=1
 else
