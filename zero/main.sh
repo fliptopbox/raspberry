@@ -37,7 +37,7 @@ do
 
 
     refresh=""
-    today=$(date +"%Y/%m/%d/")
+    today=$(date -u +"%Y/%m/%d/") # UTC date
     dest="$root$today"
 
     if [ ! -d $dest ]; then
@@ -51,11 +51,11 @@ do
 
     if [ "$awake" -eq "1" ]; then
         sh ./single.sh "$zzz"
-        sh ./stats.sh "$zzz"
     else
         echo "Sleeping ... $daytime"
     fi
 
+    sh ./stats.sh "$zzz"
     sleep "${zzz}s"
 
 done

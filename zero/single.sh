@@ -2,7 +2,7 @@
 
 # create todays destination
 root="./images/"
-today=$(date +"%Y/%m/%d/")
+today=$(date -u +"%Y/%m/%d/")a # UTC date
 dest="$root$today"
 prefix="still"
 delay=$1
@@ -29,5 +29,5 @@ nextfile="$dest$filename"
 
 raspistill -ISO 100 -q 100 -o $nextfile
 
-now=$(date +"%H:%M:%S")
+now=$(date -u +"%H:%M:%S") # UTC date
 echo "$nextfile ($free) $now ${delay}s"

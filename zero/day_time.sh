@@ -28,8 +28,9 @@ apiurl="https://api.sunrise-sunset.org/json?lat=$lat&lng=$lng&date=today"
 today="$PWD/sunrise-sunset.json"
 
 # time offset to before/after the sunrise/sunset event
-offset="90 minutes"
-now=`date +"%H%M%S"`
+# IMPORTANT! the API delivers UTC without seasonal adjustments
+offset="30 minutes"
+UTC=`date -u +"%H%M%S"`
 
 # The API call only needs to update once per day
 # the $update value is an argument sent by ./main.sh
@@ -51,10 +52,10 @@ sunrise=$(date -d "$sunrise-$offset" | awk '{print $4}' | sed -r s/\://g)
 sunset=$(date -d "$sunset+$offset" | awk '{print $4}' | sed -r s/\://g)
 
 # determine if currently between sunrise/sunset
-if [ $now -gt $sunrise -a $now -lt $sunset ]; then
+if [ $UTC -gt $sunrise -a $UTC -lt $sunset ]; then
     daytime=1
 else
     daytime=0
 fi
 
-echo "sunrise" $sunrise "sunset" $sunset "now" $now "daytime" $daytime "update" $update
+echo "sunrise" $sunrise "sunset" $sunset "UTC" $UTC "daytime" $daytime "update" $update

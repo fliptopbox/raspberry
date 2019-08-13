@@ -40,7 +40,7 @@ body {
     height: 1px;
     border: 1px solid black;
     background: white;
-    width: 0%;
+    width: var(--width);
 }
 #progress.go{
     width:100%;
@@ -82,3 +82,24 @@ body {
     background-size: cover;
     background-position: 50% 50%;
 }
+
+.rec {
+    background: white;
+    color: black;
+    padding: 1px 0.5em 2px;
+    border-radius: 1em;
+}
+.rec.on {
+    background: red;
+}
+
+.path a {
+    color: white;
+    text-decoration: none;
+    margin: 0 2px;
+}
+
+.path a:hover {
+    text-decoration: underline;
+}
+

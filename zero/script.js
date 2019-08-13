@@ -8,45 +8,31 @@ const ts = document.querySelector("#ts");
 const imagelist = document.querySelector("#images");
 const main = document.querySelector("#main");
 
-imagelist.onclick = (e) => {
-    const {dataset} = e.target;
-    const {src} = dataset;
-    if(state.current === src) {
-        console.log("Unsetting current", state.current);
-        state.current = null;
-        list();
-        title();
-        return;
-    }
-    image(src, true);
-    state.current = src;
-    list();
-    title();
-}
+stats();
 
-// relad every minute
-repeat();
-
-function repeat(n = 0) {
-
-    state.ms = n || state.ms;
-    clearTimeout(state.timer);
-
-    state.timer = setTimeout(repeat, state.ms);
-    console.log("State Delay", state.ms);
-    stats();
-}
-
-function image(source, reload=false) {
-    if(state.current && !reload) return;
-    console.log(source);
-    main.style.backgroundImage = `url(${source})`;
+function stats() {
+    fetch("stats.txt")
+        .then(r => r.text())
+        .then(parse)
+        .then(render)
+        .then(repeat)
+        .catch(err => {
+            console.warn(error);
+        });
 }
 
 function parse(string) {
     // flat text file
-    const array = string.split("\n");
-    const [ts, df] = array;
+    const array = string.trim().split("\n");
+
+    // check for the EOF char "."
+    if(!/^\.$/.test(array.slice(-1)[0])) {
+        console.warn("No EOF character found");
+        setTimeout(stats, 1000);
+        throw(123, "Payload not ready");
+    }
+
+    let [ts, df, dt] = array;
 
     const [year, month, day, hour, minute, second, z] = ts
         .match(/([^\s]+)/g)
@@ -58,6 +44,24 @@ function parse(string) {
 
     size = avail + used; // bytes
 
+    const daytime = {}
+    // converts "named value" into dictionary key/value
+    // eg "sunrise 034212 >> "sunrise": 34212
+    // and convert times to EPOC timestamp
+    dt.match(/(\w+\s\d+)/g).forEach(t => {
+        let [key, value] = t.split(" ");
+
+        // Cast as time as UTC integer
+        if(/^[0-9]{6}$/.test(value)) {
+            value = [
+                1970, 1, 1, 
+                ...value.match(/(\d{2})/g).map(n => Number(n))
+            ];
+            value = Date.UTC(...value)
+        }
+        daytime[key] = Number(value);
+    })
+
     let images = array
         .slice(3,-2)
         .map(r => {
@@ -66,28 +70,42 @@ function parse(string) {
         })
         .sort((a,b) => (a[0] - b[0]));
 
-    const date = {year, month, day, hour, minute, second};
+    // The time when the page should reload the data
+    let expire = Date.UTC(year, month -1, day, hour, minute, second);
+    expire = new Date(expire + (Number(z) * 1000));
+
     const usage = {dev, used, size, 
         percent: (used/size * 10000 >> 0) / 100
     };
 
-    return { date, z, usage, images };
+    const current = images.slice(-1)[0][1];
+
+    const date = {year, month: month - 1, day, hour, minute, second};
+
+    // sync the progress to the sleep time
+    state = {...state, expire, date, daytime, z, usage, images, current};
+    state.ms = Number(state.z || 60) * 1000;
+
+    return state;
 }
 
-function stats() {
-    console.log("getting stats", new Date());
-    fetch("stats.txt")
-        .then(r => r.text())
-        .then(parse)
-        .then(meta => {
-            state = {...state, ...meta};
+function render() {
+    image();
+    title();
+    list();
+}
 
-            const src = meta.images.slice(-1)[0][1];
+function repeat(n = 0) {
+    //state.ms = n || state.ms;
+    const [_, ms] = remainder();
+    const lag = 2000;
+    clearTimeout(state.timer);
+    state.timer = setTimeout(stats, ms + lag);
+}
 
-            image(src);
-            title();
-            list();
-        })
+function image(source = null) {
+    source = source || state.current;
+    main.style.backgroundImage = `url(${source})`;
 }
 
 function title () {
@@ -97,29 +115,13 @@ function title () {
         .toString().split(" ").slice(0,5).join(" ");
 
     ts.innerHTML = `
-        ${progress(ms)}
+        ${progress()}
         ${timestamp} - 
         (${z}s) - 
         ${disk(usage.percent)}
-        ${ current || "" }
+        ${navigation()}
+        ${rec()}
     `;
-
-}
-
-function progress(ms, wait = 240) {
-    setTimeout(() => {
-        document.querySelector("#progress").classList.add("go");
-        console.log("go!", state.ms);
-    }, wait);
-
-    return `<span id="progress" style="--ms-delay: ${ms}ms"></span>`;
-}
-
-function disk(percent) {
-    const colors = ["green", "orange", "red"];
-    const color = colors[(percent / 33.333 >> 0)];
-
-    return `Disk: ${percent}% <em class="${color}"></em>`;
 }
 
 function list (index=null) {
@@ -137,4 +139,65 @@ function list (index=null) {
         .join("");
 
     imagelist.innerHTML = `<ul>${lis}</ul>`;
+}
+
+function progress() {
+    const wait = 240;
+    const buffer = wait + 0;
+    const {ms} = state;
+    let width = 100;
+
+    let [percent, msec] = remainder();
+    
+    msec = ((msec - buffer) / ms) * ms >> 0;
+    width = width - ((percent * 100) >> 0);
+
+    setTimeout(() => {
+        document
+            .querySelector("#progress")
+            .classList.add("go");
+    }, wait);
+
+    // calcutate the remaining time to next refesh
+
+    return `<span id="progress" style="--width:${width}%;--ms-delay: ${msec}ms"></span>`;
+}
+
+function remainder() {
+    // calculate the remaining time before reload
+    const {expire, z, ms} = state;
+    const now = Date.now();
+    const percent = (expire - now) / ms;
+    const msec = ms * percent;
+
+    if (msec <= 0) return [1, 0];
+
+    // console.log(now, expire.valueOf(), percent, msec);
+    return [percent, msec];
+}
+
+function disk(percent) {
+    const colors = ["green", "orange", "red"];
+    const color = colors[(percent / 33.333 >> 0)];
+
+    return `Disk: ${percent}% <em class="${color}"></em>`;
+}
+
+function rec() {
+    const {daytime} = state.daytime;
+    const classname = daytime ? "on" : "off";
+    return `<span class="rec ${classname}">REC</span>`;
+}
+
+function navigation () {
+    let {current} = state;
+    let paths = [];
+    current.split(/[\/]+/g)
+        .reduce((a, c, i, array) => {
+            const slash = i === array.length - 1 ? "" : "/";
+            const path =  `${a || ""}${c}${slash}`.replace(/^\./, "");
+            paths.push(`<a href="${path}" target="${c}">${c}</a>`);
+            return path;
+        });
+    return `<span class="path">${paths.join("/")}</span>`;
 }
