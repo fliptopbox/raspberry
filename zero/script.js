@@ -17,7 +17,7 @@ function stats() {
         .then(render)
         .then(repeat)
         .catch(err => {
-            console.warn(error);
+            console.warn(err);
         });
 }
 
