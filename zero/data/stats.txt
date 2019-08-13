@@ -1,0 +1,24 @@
+2019 08 13 20 13 37 60
+/dev/root       30573444 14574240  14694168  50% / 1.4
+sunrise 033505 sunset 203450 UTC 201338 daytime 1 update
+../images/2019/08/13/still-1952-00002122.jpg
+../images/2019/08/13/still-1953-00002123.jpg
+../images/2019/08/13/still-1954-00002124.jpg
+../images/2019/08/13/still-1955-00002125.jpg
+../images/2019/08/13/still-1956-00002126.jpg
+../images/2019/08/13/still-1957-00002127.jpg
+../images/2019/08/13/still-1958-00002128.jpg
+../images/2019/08/13/still-2000-00002129.jpg
+../images/2019/08/13/still-2001-00002130.jpg
+../images/2019/08/13/still-2002-00002131.jpg
+../images/2019/08/13/still-2003-00002132.jpg
+../images/2019/08/13/still-2004-00002133.jpg
+../images/2019/08/13/still-2005-00002134.jpg
+../images/2019/08/13/still-2006-00002135.jpg
+../images/2019/08/13/still-2007-00002136.jpg
+../images/2019/08/13/still-2009-00002137.jpg
+../images/2019/08/13/still-2010-00002138.jpg
+../images/2019/08/13/still-2011-00002139.jpg
+../images/2019/08/13/still-2012-00002140.jpg
+../images/2019/08/13/still-2013-00002141.jpg
+.
