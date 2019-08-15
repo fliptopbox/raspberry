@@ -7,99 +7,137 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +144 script.js
+badd +1 script.js
 badd +61 style.css
-badd +1 term://.//16704:/bin/bash
+badd +1 term://.//24595:/bin/bash
 badd +41 main.sh
 badd +22 stats.sh
 badd +33 single.sh
 badd +460 stats.txt
 badd +12 index.html
-badd +1 term://.//16719:/bin/bash
-badd +46 day_time.sh
+badd +1 term://.//24611:/bin/bash
+badd +1 day_time.sh
 badd +16 make_mkv.sh
+badd +180 zero.vim
+badd +63 scripts/main.sh
+badd +76 http/js/script.js
+badd +18 http/js/title.js
+badd +39 scripts/single.sh
+badd +2 scripts/backup.sh
+badd +50 scripts/bracket.sh
+badd +324 docs/convert.txt
+badd +26 scripts/resize.sh
+badd +4 scripts/stats.sh
+badd +0 scripts/config.sh
+badd +0 http/index.html
 argglobal
 silent! argdel *
 set stal=2
-edit script.js
+edit scripts/config.sh
 set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
 wincmd _ | wincmd |
 vsplit
 2wincmd h
+wincmd _ | wincmd |
+split
+1wincmd k
+wincmd w
+wincmd w
+wincmd _ | wincmd |
+split
+1wincmd k
 wincmd w
 wincmd w
 set nosplitbelow
 set nosplitright
 wincmd t
 set winheight=1 winwidth=1
-exe 'vert 1resize ' . ((&columns * 78 + 125) / 251)
-exe 'vert 2resize ' . ((&columns * 88 + 125) / 251)
+exe '1resize ' . ((&lines * 10 + 32) / 65)
+exe 'vert 1resize ' . ((&columns * 83 + 125) / 251)
+exe '2resize ' . ((&lines * 51 + 32) / 65)
+exe 'vert 2resize ' . ((&columns * 83 + 125) / 251)
+exe '3resize ' . ((&lines * 31 + 32) / 65)
 exe 'vert 3resize ' . ((&columns * 83 + 125) / 251)
+exe '4resize ' . ((&lines * 30 + 32) / 65)
+exe 'vert 4resize ' . ((&columns * 83 + 125) / 251)
+exe 'vert 5resize ' . ((&columns * 83 + 125) / 251)
 argglobal
-setlocal fdm=manual
+setlocal fdm=indent
 setlocal fde=0
 setlocal fmr={{{,}}}
 setlocal fdi=#
 setlocal fdl=0
 setlocal fml=1
-setlocal fdn=20
+setlocal fdn=4
 setlocal fen
-silent! normal! zE
-25,90fold
-108,109fold
-112,121fold
-125,185fold
-112,185fold
-112,185fold
-112,185fold
-112,185fold
-25
-normal! zo
-108
-normal! zo
-112
-normal! zo
-112
-normal! zo
-112
-normal! zo
-112
-normal! zo
-112
-normal! zo
-125
-normal! zo
-let s:l = 41 - ((34 * winheight(0) + 31) / 62)
+let s:l = 9 - ((8 * winheight(0) + 5) / 10)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-41
-normal! 046|
+9
+normal! 035|
 lcd ~/Projects/github/raspberry/zero
 wincmd w
 argglobal
-edit ~/Projects/github/raspberry/zero/day_time.sh
-setlocal fdm=manual
+edit ~/Projects/github/raspberry/zero/scripts/main.sh
+setlocal fdm=indent
 setlocal fde=0
 setlocal fmr={{{,}}}
 setlocal fdi=#
-setlocal fdl=0
+setlocal fdl=2
 setlocal fml=1
-setlocal fdn=20
+setlocal fdn=4
 setlocal fen
-silent! normal! zE
-let s:l = 46 - ((33 * winheight(0) + 31) / 62)
+31
+normal! zo
+let s:l = 35 - ((13 * winheight(0) + 25) / 51)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-46
+35
 normal! 0
 lcd ~/Projects/github/raspberry/zero
 wincmd w
 argglobal
-edit term://.//16704:/bin/bash
+edit ~/Projects/github/raspberry/zero/scripts/resize.sh
+setlocal fdm=indent
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=4
+setlocal fen
+let s:l = 10 - ((9 * winheight(0) + 15) / 31)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+10
+normal! 033|
+lcd ~/Projects/github/raspberry/zero
+wincmd w
+argglobal
+edit ~/Projects/github/raspberry/zero/scripts/stats.sh
+setlocal fdm=indent
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=4
+setlocal fen
+let s:l = 11 - ((10 * winheight(0) + 15) / 30)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+11
+normal! 0
+lcd ~/Projects/github/raspberry/zero
+wincmd w
+argglobal
+edit term://.//24595:/bin/bash
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -108,18 +146,25 @@ setlocal fdl=0
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 144 - ((61 * winheight(0) + 31) / 62)
+let s:l = 1062 - ((61 * winheight(0) + 31) / 62)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-144
-normal! 022|
+1062
+normal! 0
 lcd ~/Projects/github/raspberry/zero
 wincmd w
-exe 'vert 1resize ' . ((&columns * 78 + 125) / 251)
-exe 'vert 2resize ' . ((&columns * 88 + 125) / 251)
+2wincmd w
+exe '1resize ' . ((&lines * 10 + 32) / 65)
+exe 'vert 1resize ' . ((&columns * 83 + 125) / 251)
+exe '2resize ' . ((&lines * 51 + 32) / 65)
+exe 'vert 2resize ' . ((&columns * 83 + 125) / 251)
+exe '3resize ' . ((&lines * 31 + 32) / 65)
 exe 'vert 3resize ' . ((&columns * 83 + 125) / 251)
-tabnew
+exe '4resize ' . ((&lines * 30 + 32) / 65)
+exe 'vert 4resize ' . ((&columns * 83 + 125) / 251)
+exe 'vert 5resize ' . ((&columns * 83 + 125) / 251)
+tabedit ~/Projects/github/raspberry/zero/http/index.html
 set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
@@ -132,32 +177,37 @@ set winheight=1 winwidth=1
 exe 'vert 1resize ' . ((&columns * 125 + 125) / 251)
 exe 'vert 2resize ' . ((&columns * 125 + 125) / 251)
 argglobal
-enew
-setlocal fdm=manual
+setlocal fdm=indent
 setlocal fde=0
 setlocal fmr={{{,}}}
 setlocal fdi=#
-setlocal fdl=0
+setlocal fdl=2
 setlocal fml=1
-setlocal fdn=20
+setlocal fdn=4
 setlocal fen
-lcd ~/Projects/github/raspberry/zero
-wincmd w
-argglobal
-edit term://.//16719:/bin/bash
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-let s:l = 62 - ((61 * winheight(0) + 31) / 62)
+let s:l = 1 - ((0 * winheight(0) + 31) / 62)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-62
+1
+normal! 0
+lcd ~/Projects/github/raspberry/zero
+wincmd w
+argglobal
+edit term://.//24611:/bin/bash
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+let s:l = 31 - ((30 * winheight(0) + 31) / 62)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+31
 normal! 0
 lcd ~/Projects/github/raspberry/zero
 wincmd w

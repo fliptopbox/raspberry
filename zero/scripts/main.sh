@@ -1,5 +1,7 @@
 #!/bin/bash
 
+this=`readlink -f "${BASH_SOURCE[0]}" 2>/dev/null||echo $0`
+Q=`dirname "${this}"`
 
 #    
 #     ██████████   ██████   ██ ███████
@@ -22,21 +24,21 @@
 
 
 
-# One photo every Nth minute
-minutes=1
-
-# Sleep time in seconds
-zzz=$(( $minutes*60 ))
-
-# Image destination (relative)
-root="../images/"
-
 
 while true
 do
 
+    . "$Q/config.sh"
+
+    # Image destination (relative)
+    root="$relativeStills/"
+
+    # Sleep time in seconds
+    zzz="$sleepInterval"
+
 
     refresh=""
+    begin=`date +%s`
     today=$(date -u +"%Y/%m/%d/") # UTC date
     dest="$root$today"
 
@@ -46,16 +48,21 @@ do
         refresh="true"
     fi
 
-    daytime=$(sh day_time.sh $refresh)
+    daytime=$(./day_time.sh $refresh)
     awake=$(echo $daytime | awk '{print $8}')
 
     if [ "$awake" -eq "1" ]; then
-        sh ./single.sh "$zzz"
+        hires=$(./single.sh "$zzz" | awk '{print $1}')
+        ./resize.sh "$hires"
+
     else
         echo "Sleeping ... $daytime"
     fi
 
-    sh ./stats.sh "$zzz"
+    finish=`date +%s`
+    runtime=$((finish-begin))
+
+    ./stats.sh $zzz $runtime
     sleep "${zzz}s"
 
 done

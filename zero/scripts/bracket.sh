@@ -1,43 +1,60 @@
 #!/bin/bash
 
-# create todays destination
-root="../images/"
-today=$(date +"%Y/%m/%d/")
-dest="$root$today"
-prefix="seq"
+this=`readlink -f "${BASH_SOURCE[0]}" 2>/dev/null||echo $0`
+Q=`dirname "${this}"`
+. "$Q/config.sh"
+
+
+# eg "../images/bracket/" "kilroy" "png"
+
+hms=$(date +"%H%M%S")
+path="./"
+name="bracket-$hms"
+encoding="jpg"
 bracket=3
-range=$(($bracket + $bracket + 1))
+stops=8
+
+while getopts ":p:n:e:b:s:" opt; do
+    case $opt in
+        p) path=`echo $OPTARG` ;;
+        b) bracket=`echo $OPTARG`;;
+        e) encoding=`echo $OPTARG`;;
+        s) stops=`echo $OPTARG`;;
+        n) name=`echo $OPTARG`;;
+        \?) echo "Invalid option -$OPTARG" >&2 ;;
+    esac
+done
+
+clear
+
+printf "\n\nPiCamera - LDR bracketing:\n\n"
+echo "Destination: $path"
+echo "Filename: $name"
+echo "Encoding: $encoding"
+echo "Bracket: ${bracket}"
+echo "Stops: ${stops}"
+printf "\n\n"
+
+mkdir -p $path
+
+# Bracketing range
 ev="0"
-
-echo $dest
-mkdir -p $dest
-
-# Derive the last frame number
-current=`ls -R $root \
-    | sort -V \
-    | grep -E '[0-9]{8}.*jpg$' \
-    | tail -1 \
-    | sed -E 's/(.*)([0-9]{8})(.*)/\2/g' \
-    | sed 's/^[0]*//g'`
-
-# Increment the last frame number
-next=`printf %08d $((current + 1))`
-
+range=$(($bracket + $bracket + 1))
+filename="${path}${name}"
 
 # Generate the bracketed photos
 while [ $ev -lt $range ]; do
 
-    # Case linear int to signed byte
+    # Cast linear int to signed byte
     # eg. 1= -24, ... 4=0 ... 7= +24
-    exposure=$(( 8*(ev -bracket) ))
+    exposure=$(( $stops*(ev -bracket) ))
     ev=$(($ev + 1))
 
     # create the new filename
     # eg. seq-00000001-EV1.jpg
-    filename="$prefix-$next-EV$ev.jpg"
-    nextfile="$dest$filename"
+    output="${filename}-EV${ev}.${encoding}"
 
-    echo "$nextfile - EV: $exposure"
 
-    raspistill -q 100 -ev $exposure -o $nextfile
+    echo ">>> $exposure $output ($encoding)"
+    raspistill -t 2 -q 100 -ev $exposure -e $encoding -o $output
 done

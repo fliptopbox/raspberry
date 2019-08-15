@@ -1,30 +1,30 @@
 #!/bin/bash
 
-delay=$1
-count=20
-log="../data/stats.txt"
-images="../images/"
-datetime=$(date -u +"%Y %m %d %H %M %S") # UTC date
-cpu=$(ps -eo pcpu,cmd | sort -k 1 -r | head -20 | awk '{s+=$1} END {print s}')
-disk=$(df | grep /dev/root)
+this=`readlink -f "${BASH_SOURCE[0]}" 2>/dev/null||echo $0`
+Q=`dirname "${this}"`
+. "$Q/config.sh"
 
-# list of absolute image path
-frames=$(find $images -regex ".*jpg$" -ls | awk '{print $11}' | sort | tail -${count})
-# frames=$(find $images -regex ".*jpg$" | sort -V | tail -${count})
-# frames=$(ls -ltRr $images | grep ".*jpg$" | tail -${count})
+delay=$1
+runtime=$2
+log="$relativeStats"
+
 
 # Overwrite existing stats
+datetime=$(date -u +"%Y %m %d %H %M %S") # UTC date
 echo "$datetime $delay" > $log
 
 # Disk and CPU usage
-echo "$disk $cpu" >> $log
+disk=$(df | grep /dev/root)
+cpu=$(ps -eo pcpu,cmd | sort -k 1 -r | head -20 | awk '{s+=$1} END {print s}')
+echo "$disk $cpu $runtime" >> $log
 
 # Current daytime status
-echo $(sh day_time.sh) >> $log
+echo $(./day_time.sh) >> $log
 
-# the list of last 20 images
-# find images/ -regex ".*jpg$" -ls | awk '{print $11, $10}' | sort -V | tail -250
-# find $images -regex ".*jpg$" | sort -V | tail -${count} >> $log
+# the current image low-res & original path
+current=$(find "$relativeCurrent/" -regex ".*jpg$" -ls | awk '{print $11}' | sort | tail -1)
+frames=$(find "$relativeStills/" -regex ".*jpg$" -ls | awk '{print $11}' | sort | tail -1)
+echo "$current" >> $log
 echo "$frames" >> $log
 
 # EOF fullstop

@@ -5,9 +5,10 @@
 
 
 cd /home/pi/Projects/github/raspberry/zero/
-screen -dmS main sh ./scripts/main.sh
+cd scripts/
+screen -dmS main ./main.sh
 
-cd http/
+cd ../http/
 screen -dmS http python3 -m http.server
 
 

@@ -3,7 +3,6 @@
 //
 
 let state = {
-    current: null, 
     ms: (60 * 1000), 
     timer: null,
     monitor: null,
@@ -15,7 +14,6 @@ let state = {
 
 const body = document.querySelector("body");
 const ts = document.querySelector("#ts");
-const imagelist = document.querySelector("#images");
 const main = document.querySelector("#main");
 const api = { stats: "/data/stats.txt"}
 
@@ -46,22 +44,14 @@ function parse(string) {
 
     let [ts, df, dt] = array;
 
-    // console.log("chk", state.chksum,  ts)
-    if(state.chksum === ts){
-        return retry(500, "Timestamp has not updated.")
-    }
-
-
     const [year, month, day, hour, minute, second, z] = ts
         .match(/([^\s]+)/g)
         .map(v => Number(v));
 
-    // Last modified date/time
-    const chksum = ts;
     const date = {year, month: month - 1, day, hour, minute, second};
 
     // Disk usage
-    let [dev, size, used, avail, percent] = df
+    let [dev, size, used, avail, percent, mnt, pcpu, runtime] = df
         .match(/([^\s]+)/g)
         .map(v => /^\d+$/.test(v) ? Number(v) : v);
     size = avail + used; // bytes
@@ -74,30 +64,32 @@ function parse(string) {
         daytime[key] = Number(value);
     })
 
-    // Image collection (last 20ish)
-    let images = array
-        .filter(row => /-\d+\.jpg$/.test(row))
-        .map(r => {
-            const [_, no]= r.match(/(\d{8})/);
-            return [Number(no), r]
-        });
+
+    // If the camera is offine then ignore the checksum
+    const online = daytime.daytime;
+    if(online && state.chksum === ts){
+        return retry(500, "Timestamp has not updated.")
+    }
+
+    // Last modified date/time
+    const chksum = ts;
+
+    // Images: current (low-res) original
+    let images = array.filter(row => /-\d+\.jpg$/.test(row));
 
     // The time when the page should reload the data
-    let severPrepTime = 18 * 1000;
+    // add 15% extra as contingency
+    let serverRuntime = (runtime * 1.08) * 1000;
     let cameraInterval = Number(z) * 1000;
     let expire = Date.UTC(year, month -1, day, hour, minute, second);
-    expire = new Date(expire + severPrepTime + cameraInterval);
-
+    expire = new Date(expire + serverRuntime + cameraInterval);
 
     const usage = {dev, used, size, 
         percent: (used/size * 10000 >> 0) / 100
     };
 
-    const current = images.slice(-1)[0][1];
-
-
     // sync the progress to the sleep time
-    state = {...state, chksum, expire, date, daytime, z, usage, images, current};
+    state = {...state, chksum, expire, date, daytime, z, usage, images};
     state.ms = Number(state.z || 60) * 1000;
     state.attempts = 0;
 
@@ -110,7 +102,6 @@ function parse(string) {
 function render() {
     image();
     title();
-    list();
 
     return true;
 }
@@ -127,12 +118,12 @@ function repeat(n = 0) {
 }
 
 function image(source = null) {
-    source = source || state.current;
+    source = source || state.images[0];
     main.style.backgroundImage = `url(${source})`;
 }
 
 function title () {
-    const {date, usage, z, current = "", ms} = state;
+    const {date, usage, z, ms} = state;
     const {year, month, day, hour, minute, second} = date;
     const timestamp = new Date(year, month, day, hour, minute, second)
         .toString().split(" ").slice(0,5).join(" ");
@@ -147,26 +138,9 @@ function title () {
     `;
 }
 
-function list (index=null) {
-    if(!state.grid) {
-        imagelist.innerHTML = "";
-        return;
-    }
-
-    const {images, current = ""} = state;
-    const lis = images
-        .map(s => {
-            const current = state.current === s[1] ? `class="selected"` : "";
-            return `<li ${current} data-id="${s[0]}" data-src="${s[1]}">${s[0]}</li>`;
-        })
-        .join("");
-
-    imagelist.innerHTML = `<ul>${lis}</ul>`;
-}
-
 function progress() {
     const {ms} = state;
-    const wait = 240;
+    const wait = 150;
     const buffer = wait + 0;
     let width = 100;
 
@@ -185,7 +159,6 @@ function progress() {
             .classList.add("go");
     }, wait);
 
-    console.log("return span", width, msec)
     // calcutate the remaining time to next refesh
     return `<span id="progress" style="--width:${width}%;--ms-delay: ${msec}ms"></span>`;
 }
@@ -217,7 +190,7 @@ function rec() {
 }
 
 function navigation () {
-    let {current} = state;
+    let [_, current] = state.images;
     let paths = [];
     current.split(/[\/]+/g)
         .reduce((a, c, i, array) => {
@@ -249,7 +222,7 @@ function retry(err, desc) {
         throw(err, `Too many attempts. ${desc} ${attempts}`);
     }
 
-    const inc = (state.attempts * 5) * 1000;
+    const inc = (state.attempts * 2) * 1000;
     console.log("inc", state.attempts, inc);
     monitor = monitor || setTimeout(() => {
         clearTimeout(monitor)
