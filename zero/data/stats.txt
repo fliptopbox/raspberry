@@ -1,6 +1,6 @@
-2019 08 16 13 32 36 60
-/dev/root       30573444 15956912  13311496  55% / 5.3 15
-sunrise 034026 sunset 202819 UTC 133237 daytime 1 update
-../images/current/still-1332-00003354.jpg
-../images/still/2019/08/16/still-1332-00003354.jpg
+2019 08 16 13 33 53 60
+/dev/root       30573444 15962188  13306220  55% / 1.8 16
+sunrise 034026 sunset 202819 UTC 133353 daytime 1 update
+../images/current/still-1333-00003355.jpg
+../images/still/2019/08/16/still-1333-00003355.jpg
 .
