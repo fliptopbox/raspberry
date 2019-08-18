@@ -6,12 +6,9 @@ Q=`dirname "${this}"`
 
 
 # Backup timelapse images to remote server,
-# excluding the images taken today & yesterday
+# exclude current folder, and images taken today & yesterday
 # then delete the local files, to free drive space.
 # Afterwards remove and empty folders.
-
-#dst="bruce@lithium:Projects/github/raspberry/zero/images"
-#src="../images/"
 
 dst="$remoteRsyncServer:$remoteImageDest"
 src="$relativeImages/"
@@ -30,12 +27,13 @@ echo $src
 
 rsync -ruvz \
     --remove-source-files \
+    --exclude $relativeCurrent \
     --exclude $yesterday \
     --exclude $today \
     $src \
     $dst
 
-# clean up and empty folders (not an rsync option)
+# clean up empty folders (not achieveable as an rsync option)
 find $src -depth -type d -empty -delete
 
 
