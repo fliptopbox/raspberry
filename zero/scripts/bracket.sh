@@ -8,9 +8,9 @@ Q=`dirname "${this}"`
 # eg "../images/bracket/" "kilroy" "png"
 
 hms=$(date +"%H%M%S")
-path="./"
 name="bracket-$hms"
 encoding="jpg"
+path="./"
 bracket=3
 stops=8
 
@@ -54,7 +54,7 @@ while [ $ev -lt $range ]; do
     # eg. seq-00000001-EV1.jpg
     output="${filename}-EV${ev}.${encoding}"
 
-
     echo ">>> $exposure $output ($encoding)"
     raspistill -t 2 -q 100 -ev $exposure -e $encoding -o $output
+
 done

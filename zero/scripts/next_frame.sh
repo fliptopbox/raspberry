@@ -6,6 +6,11 @@ Q=`dirname "${this}"`
 . "$Q/config.sh"
 
 root="$relativeStills/"
+
+if [ $1 ]; then
+    root=$1
+fi
+
 current=`ls -lR $root \
     | grep -E '[0-9]{8}\.*jpg$' \
     | tail -1 \
