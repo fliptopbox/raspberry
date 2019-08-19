@@ -22,7 +22,13 @@ Q=`dirname "${this}"`
 
 
 
+# The destination sub-directory
+# eg. "bracket", "still"
+type="still"
 
+if [ $1 ]; then
+    type=$1
+fi
 
 
 while true
@@ -31,7 +37,7 @@ do
     . "$Q/config.sh"
 
     # Image destination (relative)
-    root="$relativeStills/"
+    root="$relativeImages/$type/"
 
     # Sleep time in seconds
     zzz="$sleepInterval"
@@ -52,7 +58,23 @@ do
     awake=$(echo $daytime | awk '{print $8}')
 
     if [ "$awake" -eq "1" ]; then
-        hires=$(./single.sh "$zzz" | awk '{print $1}')
+        case $type
+            still)
+                echo "take still image"
+                hires=$(./single.sh "$zzz" | awk '{print $1}')
+                ;;
+            bracket)
+                echo "take bracket sequence"
+                hms=`date -u +"%H%M%S"`
+                seq=$(./next_frame.sh "$dest" | awk '{print $1}')
+                hires=$(./bracket.sh \
+                    -p $dest \
+                    -n "bracket-$hms-$seq" \
+                    | awk '{print $1}')
+                ;;
+        esac
+
+        # ALWAYS resize one image for the UI display
         ./resize.sh "$hires"
 
     else
