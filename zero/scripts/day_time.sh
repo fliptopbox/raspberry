@@ -33,7 +33,9 @@ offset="30 minutes"
 modified=`date -r $dest +"%m%d"`
 today=`date +"%m%d"`
 
-if [ "$modified" == "$today" ]; then
+
+
+if [ "$modified" != "$today" ]; then
     update=true
 fi
 
