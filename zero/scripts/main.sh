@@ -1,8 +1,5 @@
 #!/bin/bash
 
-this=`readlink -f "${BASH_SOURCE[0]}" 2>/dev/null||echo $0`
-Q=`dirname "${this}"`
-
 #    
 #     ██████████   ██████   ██ ███████
 #    ░░██░░██░░██ ░░░░░░██ ░██░░██░░░██
@@ -21,6 +18,7 @@ Q=`dirname "${this}"`
 #
 
 
+. config.sh
 
 # The destination sub-directory
 # eg. "bracket", "still"
@@ -34,7 +32,7 @@ fi
 while true
 do
 
-    . "$Q/config.sh"
+    . config.sh
 
     # Image destination (relative)
     root="$relativeImages/$type/"
@@ -57,21 +55,29 @@ do
     daytime=$(./day_time.sh $refresh)
     awake=$(echo $daytime | awk '{print $8}')
 
+    if [ $stayAwake == true ]; then
+        awake=1
+    fi
+
     if [ "$awake" -eq "1" ]; then
         case $type in
             still)
                 echo "take still image"
                 hires=$(./single.sh "$zzz" | awk '{print $1}')
                 ;;
+
             bracket)
-                echo "take bracket sequence"
-                hms=`date -u +"%H%M%S"`
+                hms=`date -u +"%H%M"`
                 seq=$(./next_frame.sh "$dest" | awk '{print $1}')
+                echo "take bracket sequence: $hms $seq $dest"
+
                 hires=$(./bracket.sh \
-                    -p $dest \
-                    -n "bracket-$hms-$seq" \
-                    | awk '{print $1}')
+                     -p $dest \
+                     -n "bracket-$hms" \
+                     -s $seq \
+                     | awk '{print $1}')
                 ;;
+
         esac
 
         # ALWAYS resize one image for the UI display

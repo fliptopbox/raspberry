@@ -15,16 +15,14 @@
 #   https://stackoverflow.com/questions/3040904/save-json-outputted-from-a-url-to-a-file
 
 
+. ./config.sh
 
 # Incoming argument (optional) "true" to trigger API call
 update=$1
 
 # Go to google maps to find your lat/lng geolocation
-lat=51.5465589
-lng=-0.0352543
-
 apiurl="https://api.sunrise-sunset.org/json?lat=$lat&lng=$lng&date=today"
-dest="../data/sunrise-sunset.json"
+dest="$relativeData/sunrise-sunset.json"
 
 # time offset to before/after the sunrise/sunset event
 offset="30 minutes"
@@ -32,8 +30,6 @@ offset="30 minutes"
 # check modified date against roday's date
 modified=`date -r $dest +"%m%d"`
 today=`date +"%m%d"`
-
-
 
 if [ "$modified" != "$today" ]; then
     update=true
