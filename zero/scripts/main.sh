@@ -58,7 +58,7 @@ do
     awake=$(echo $daytime | awk '{print $8}')
 
     if [ "$awake" -eq "1" ]; then
-        case $type
+        case $type in
             still)
                 echo "take still image"
                 hires=$(./single.sh "$zzz" | awk '{print $1}')
