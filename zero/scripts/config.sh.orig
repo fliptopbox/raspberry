@@ -1,0 +1,30 @@
+<<<<<<< HEAD
+#!/bin/bash
+
+remoteRsyncServer="bruce@lithium"
+remoteImageDest="Projects/github/raspberry/zero/images"
+
+relativeImages="../images"
+relativeStills="$relativeImages/still"
+relativeCurrent="$relativeImages/current"
+
+relativeData="../data"
+relativeStats="$relativeData/stats.txt"
+
+stayAwake=true
+sleepInterval=$(( 1*60 )) # seconds
+
+lat=51.5465589
+lng=-0.0352543
+||||||| merged common ancestors
+=======
+#!/bin/bash
+
+remoteRsyncServer="bruce@lithium"
+remoteImageDest="Projects/github/raspberry/zero/images"
+relativeImages="../images"
+relativeStills="../images/still"
+relativeCurrent="../images/current"
+relativeStats="../data/stats.txt"
+sleepInterval=$(( 1*60 )) # seconds
+>>>>>>> 637a5bad8e4b4b2e9dbdadccd5a57a1efe9a07d8
