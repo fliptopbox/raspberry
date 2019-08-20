@@ -1,0 +1,6 @@
+2019 08 19 00 24 54 60
+/dev/root       30573444 12317348  16951060  43% / 8.5 2
+sunrise 034545 sunset 202140 UTC 002455 daytime 0 update true
+../images/current/still-2023-00004618.jpg
+../images/still/2019/08/18/still-2023-00004618.jpg
+.
