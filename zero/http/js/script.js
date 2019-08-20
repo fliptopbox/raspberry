@@ -1,9 +1,12 @@
-
 // http://192.168.1.51:8000/images/image-0901.jpg
 //
 
 let state = {
-    ms: (60 * 1000), 
+    api: {
+        server: 'http://192.168.1.51:8000',
+        stats: '/data/stats.txt'
+    },
+    ms: 60 * 1000,
     timer: null,
     monitor: null,
     attempts: 0,
@@ -20,7 +23,8 @@ const api = { stats: "/data/stats.txt"}
 stats();
 
 function stats(url = null) {
-    url = url || `${api.stats}`;
+    const { server, stats } = state.api;
+    url = url || `${server}${stats}`;
     // console.log("url", url);
     fetch(url)
         .then(r => r.text())
@@ -84,8 +88,11 @@ function parse(string) {
     let expire = Date.UTC(year, month -1, day, hour, minute, second);
     expire = new Date(expire + serverRuntime + cameraInterval);
 
-    const usage = {dev, used, size, 
-        percent: (used/size * 10000 >> 0) / 100
+    const usage = {
+        dev,
+        used,
+        size,
+        percent: (((used / size) * 10000) >> 0) / 100
     };
 
     // sync the progress to the sleep time
@@ -118,18 +125,26 @@ function repeat(n = 0) {
 }
 
 function image(source = null) {
-    source = source || state.images[0];
-    main.style.backgroundImage = `url(${source})`;
+    const { api, images } = state;
+    const url = `${api.server}`;
+    source = source || images[0];
+    source = source.replace(/^\.+/, '');
+
+    main.style.backgroundImage = `url(${api.server}/${source})`;
 }
 
 function title () {
     const {date, usage, z, ms} = state;
     const {year, month, day, hour, minute, second} = date;
     const timestamp = new Date(year, month, day, hour, minute, second)
-        .toString().split(" ").slice(0,5).join(" ");
+        .toString()
+        .split(' ')
+        .slice(0, 5)
+        .join(' ');
+
+    progress();
 
     ts.innerHTML = `
-        ${progress()}
         ${timestamp} - 
         (${z}s) - 
         ${disk(usage.percent)}
@@ -139,48 +154,77 @@ function title () {
 }
 
 function progress() {
-    const {ms} = state;
-    const wait = 150;
-    const buffer = wait + 0;
-    let width = 100;
+    const { daytime } = state.daytime;
+
+    let el = document.querySelector('#progress');
+
+    if (!el) {
+        console.log('Create progress element');
+        const footer = document.createElement("div");
+        footer.className = "footer"
+
+        el = document.createElement('div');
+        el.id = 'progress';
+
+
+        document.querySelector('body').prepend(footer);
+        footer.append(el)
+    }
+
+    // const { ms } = state;
+    // const wait = 150;
+    // const buffer = wait + 0;
+    // let width = 100;
 
     let [percent, msec] = remainder();
+    let display = daytime ? 'block' : 'none';
 
-    
-    msec = ((msec - buffer) / ms) * ms >> 0;
-    width = Math.max(0, width - ((percent * 100) >> 0));
+    percent = (percent * 100) >> 0;
 
-    console.log("ready to render", percent)
-    // Halt the redraw while data loads
-    percent < 1.2 && setTimeout(() => {
-        console.log("adding go class")
-        document
-            .querySelector("#progress")
-            .classList.add("go");
-    }, wait);
+    el.classList.remove('go');
+    el.style.display = display;
+    el.style.setProperty('--width', `${100 - percent}%`);
+    el.style.setProperty('--ms-delay', `${msec}ms`);
 
-    // calcutate the remaining time to next refesh
-    return `<span id="progress" style="--width:${width}%;--ms-delay: ${msec}ms"></span>`;
+    setTimeout(() => el.classList.add('go'), 100);
 }
 
 function remainder() {
     // calculate the remaining time before reload
     const {expire, ms} = state;
     const now = Date.now();
-    const percent = (expire - now) / ms;
+
+    // clamp the percent to normals
+    let percent = (expire - now) / ms;
+    percent = Math.min(1, percent);
+    percent = Math.max(0, percent);
+
+    if(now > expire) {
+        console.log("Expired", expire - now)
+        percent = 0;
+        ms = 0;
+    }
+
     const msec = ms * percent;
 
-    if (msec <= 0) return [1, 0];
+    // if (msec <= 150) return [1, 0];
+    // if (percent > 0.98) return [1, 0];
 
     // console.log(now, expire.valueOf(), percent, msec);
     return [percent, msec];
 }
 
 function disk(percent) {
-    const colors = ["green", "orange", "red"];
-    const color = colors[(percent / 33.333 >> 0)];
-
-    return `Disk: ${percent}% <em class="${color}"></em>`;
+    const fith = (percent / 20) >> 0;
+    const colors = ['green', 'green', 'orange', 'red', 'black'];
+    const color = colors[fith];
+    const html = `<span class="usage">
+        <strong>DISK</strong>
+        <span class="graph" style="width: 100px">
+            <span class="value ${color}" style="width:${percent >> 0}%">${percent >> 0}%</span>
+        </span>
+    </span>`;
+    return html;
 }
 
 function rec() {
@@ -192,14 +236,15 @@ function rec() {
 function navigation () {
     let [_, current] = state.images;
     let paths = [];
-    current.split(/[\/]+/g)
-        .reduce((a, c, i, array) => {
-            const slash = i === array.length - 1 ? "" : "/";
-            const path =  `${a || ""}${c}${slash}`.replace(/^\.+/, "");
-            paths.push(`<a href="${path}" target="${c}">${c}</a>`);
-            return path;
-        });
-    return `<span class="path">${paths.join("/")}</span>`;
+    const url = `${state.api.server}`;
+
+    current.split(/[\/]+/g).reduce((a, c, i, array) => {
+        const slash = i === array.length - 1 ? '' : '/';
+        const path = `${a || ''}${c}${slash}`.replace(/^\.+/, '');
+        paths.push(`<a href="${url}/${path}" target="${c}">${c}</a>`);
+        return path;
+    });
+    return `<span class="path">${paths.join('/')}</span>`;
 }
 
 function retry(err, desc) {
@@ -222,12 +267,13 @@ function retry(err, desc) {
         throw(err, `Too many attempts. ${desc} ${attempts}`);
     }
 
-    const inc = (state.attempts * 2) * 1000;
-    console.log("inc", state.attempts, inc);
-    monitor = monitor || setTimeout(() => {
-        clearTimeout(monitor)
-        state.monitor = null;
-        stats();
-    }, inc);
-
+    const inc = state.attempts * 2000;
+    console.log('inc', state.attempts, inc);
+    monitor =
+        monitor ||
+        setTimeout(() => {
+            clearTimeout(monitor);
+            state.monitor = null;
+            stats();
+        }, inc);
 }

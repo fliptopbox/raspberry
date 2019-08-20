@@ -10,5 +10,3 @@ screen -dmS main ./main.sh
 
 cd ../http/
 screen -dmS http python3 -m http.server
-
-

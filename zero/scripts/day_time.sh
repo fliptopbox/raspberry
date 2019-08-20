@@ -20,7 +20,6 @@
 # Incoming argument (optional) "true" to trigger API call
 update=$1
 
-# Go to google maps to find your lat/lng geolocation
 apiurl="https://api.sunrise-sunset.org/json?lat=$lat&lng=$lng&date=today"
 dest="$relativeData/sunrise-sunset.json"
 
