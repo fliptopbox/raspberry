@@ -191,7 +191,7 @@ function progress() {
 
 function remainder() {
     // calculate the remaining time before reload
-    const {expire, ms} = state;
+    let {expire, ms} = state;
     const now = Date.now();
 
     // clamp the percent to normals

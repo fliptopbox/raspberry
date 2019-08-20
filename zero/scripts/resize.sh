@@ -14,7 +14,8 @@ mkdir -p $relativeCurrent
 filename=$(echo $1 | awk -F'/' '{print $NF}')
 resizedImage="$relativeCurrent/$filename"
 
-convert $1 -resize x1080 $resizedImage
+# convert $1 -resize x1080 $resizedImage
+raspistill -h 1080 -t 3 -ISO 300 -q 100 -o $resizedImage
 
 # Delete older files AFTER we have a replacement
 count=`ls $relativeCurrent/*.jpg | wc -l`
