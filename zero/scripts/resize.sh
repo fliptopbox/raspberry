@@ -13,7 +13,7 @@ filename=$(echo $1 | awk -F'/' '{print $NF}')
 resizedImage="$relativeCurrent/$filename"
 
 # it is MUCH quicker to take a new low-res photo 
-# than to resize existing with image magik "convert"
+# than to resize existing with imagemagick "convert"
 ## convert $1 -resize x1080 $resizedImage
 
 raspistill \
