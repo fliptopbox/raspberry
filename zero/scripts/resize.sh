@@ -1,8 +1,6 @@
 #!/bin/bash
 
-this=`readlink -f "${BASH_SOURCE[0]}" 2>/dev/null||echo $0`
-Q=`dirname "${this}"`
-. "$Q/config.sh"
+. ./config.sh
 
 # grab the last image in todays directory
 # and generate a 1080p resized copy
@@ -14,8 +12,17 @@ mkdir -p $relativeCurrent
 filename=$(echo $1 | awk -F'/' '{print $NF}')
 resizedImage="$relativeCurrent/$filename"
 
-# convert $1 -resize x1080 $resizedImage
-raspistill -h 1080 -t 3 -ISO 300 -q 100 -o $resizedImage
+# it is MUCH quicker to take a new low-res photo 
+# than to resize existing with image magik "convert"
+## convert $1 -resize x1080 $resizedImage
+
+raspistill \
+    -w $resizeWidth \
+    -h $resizeHeight \
+    -t $cameraTimeout \
+    -ISO $ISO \
+    -q $jpgQuality \
+    -o $resizedImage
 
 # Delete older files AFTER we have a replacement
 count=`ls $relativeCurrent/*.jpg | wc -l`
