@@ -11,7 +11,7 @@ relativeData="../data"
 relativeStats="$relativeData/stats.txt"
 
 stayAwake=true
-sleepInterval=$(( 1*60 )) # seconds
+sleepInterval=$(( 5*60 )) # seconds
 
 lat=51.5465589
 lng=-0.0352543
