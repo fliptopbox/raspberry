@@ -9,6 +9,7 @@ cd scripts/
 screen -dmS main ./main.sh
 
 cd ../http/
-screen -dmS http python3 -m http.server
+# screen -dmS http python3 -m http.server
+screen -dmS http ./http_cors.py
 
 
