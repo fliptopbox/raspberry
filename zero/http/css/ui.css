@@ -1,0 +1,118 @@
+#footer {
+    z-index: 1;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    font-size: 20px;
+    display: flex;
+    padding: 1em 1em 1em;
+    background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+}
+
+.widget a {
+  text-decoration: none;
+  color: white;
+}
+
+.widget {
+    font-size: inherit;
+    flex: 0 1 auto;
+    align-self: center;
+    padding: 0 0.6em;
+    white-space: nowrap;
+}
+.widget.reload {
+    flex: 2 0 auto;
+    background: #171717;
+    padding: 0;
+    border-radius: 0.3em;
+}
+
+.widget .text {
+    font-size: 0.8em;
+}
+
+.footer {
+    background: black;
+    display: block;
+    position: fixed;
+    bottom: 1em;
+    left: 1em;
+    right: 1em;
+    z-index: 2;
+    overflow: hidden;
+}
+.progressbar {
+    flex: 1 1 auto;
+    display: flex;
+}
+
+#progress {
+    height: 10px;
+    background: white;
+    width: var(--width);
+    margin: 1px;
+    border-radius: 0.3em;
+}
+
+#progress.go{
+    width:100%;
+    transition-property: width;
+    transition-duration: var(--ms-delay);
+    transition-timing-function: linear;
+
+}
+
+#ts {
+    font-size: 20px;
+    position: absolute;
+    z-index: 1;
+    bottom: 0;
+    margin: 0;
+    padding: 3em 1em 1em;
+    background: linear-gradient(to top, rgba(0,0,0,6) 0%, rgba(0,0,0,0) 100%);
+    right: 0;
+    left: 0;
+    display: flex;
+}
+
+
+.rec {
+    background: #210303;
+    color: black;
+    padding: 0.2em 0.8em 0.2em 0;
+    border-radius: 0.1em;
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 0.8em
+
+}
+.rec:before {
+    content: "";
+    width: 0.5em;
+    height: 0.5em;
+    display: inline-block;
+    vertical-align: middle;
+    background: black;
+    border-radius: 1em;
+    margin: -0.1em 0.5em 0;
+}
+.rec.on:before {
+    background: red;
+}
+.rec.on {
+    border: 0.05em solid red;
+    color: red;
+}
+
+.path a {
+    color: white;
+    text-decoration: none;
+    margin: 0 2px;
+}
+
+.path a:hover {
+    text-decoration: underline;
+}
+
