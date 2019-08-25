@@ -24,10 +24,8 @@ function parse(payload = '') {
         .forEach(row => {
             let [key, value] = row;
 
-            console.log(">>", key, value);
             key = parentChild(key);
             value = primitive(value);
-            console.log("<<", key, value);
 
             if (key.length === 1) {
                 next[key[0]] = value;
