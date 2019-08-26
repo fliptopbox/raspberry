@@ -19,6 +19,7 @@ do
     # Sleep time in seconds
     zzz="$sleepInterval"
 
+
     # if the stats file already exist ...
     # 1. then check the expires date, 
     # 2. output the existing stats.txt (ie cache)
@@ -32,9 +33,9 @@ do
 
         if [ $datediff -gt 0 ]; then
             echo "log=using cache"
-            echo `cat $relativeStats`
+            echo -e `cat $relativeStats`
 
-            echo "log=retry in (${datediff}) ... $retry"
+            echo "log=retry in (${datediff}"
 
             sleep "${datediff}s"
         fi
@@ -90,12 +91,11 @@ do
     finish=`date +%s`
     runtime=$((finish-begin))
 
-    echo "log=stats"
+    echo "log=update stats"
     response=$(./stats.sh $zzz $runtime)
     echo $response
 
     echo "log=snooze ... $zzz"
-
     sleep "${zzz}s"
 
     echo "log=delete cache"
