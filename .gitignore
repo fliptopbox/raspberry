@@ -1,5 +1,4 @@
 *.jpg
 tags/
 data/*
-data
-zero/data
+zero/data/
