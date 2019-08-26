@@ -8,7 +8,7 @@ relativeStills="$relativeImages/still"
 relativeCurrent="$relativeImages/current"
 
 relativeData="../data"
-relativeStats="$relativeData/stats.txt"
+relativeStats="$relativeData/stats.v2.txt"
 
 stayAwake=false # do not sleep at night
 intervalMinutes=5

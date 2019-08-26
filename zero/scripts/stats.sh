@@ -8,7 +8,10 @@ log="$relativeStats"
 
 
 begin=`date +%s`
+created=`date -u +%s`
+expires=$(( created+sleepInterval ))
 datetime=$(date -u +"%Y %m %d %H %M %S") # UTC date
+
 daytime=$(./day_time.sh)
 
 # Disk and CPU usage
@@ -27,6 +30,8 @@ localTime=$((finish-begin))
 runtime=$(( runtime+localTime ))
 
 payload="cmd=data"
+payload+="\ncreated=$created"
+payload+="\nexpires=$expires"
 payload+="\ntimestamp=$datetime"
 payload+="\nsleepInterval=$sleepInterval"
 payload+="\nserverRuntime=$runtime"
@@ -48,5 +53,5 @@ payload+="\nimageFullsize=$imageFullsize"
 payload+="\nimageCount=$imageCount"
 payload+="\n."
 
-echo -e $payload > ${log}.v2
+echo -e $payload > ${log}
 echo $payload
