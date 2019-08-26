@@ -59,11 +59,12 @@ sunset=$(date -d "$sunset+$offset" | awk '{print $4}')
 
 # Determine if time is currently between sunrise/sunset
 # and extract the time value as long (eg. 0345512)
-UTC=`date -u +"%H%M%S"`
+UTC=`date -u +"%H:%M:%S"`
+intUTC=$(echo $UTC | sed 's/\://g')
 intSunrise=$(echo $sunrise | sed 's/\://g')
 intSunset=$(echo $sunset | sed 's/\://g')
 
-if [ $UTC -gt $intSunrise -a $UTC -lt $intSunset ]; then
+if [ $intUTC -gt $intSunrise -a $intUTC -lt $intSunset ]; then
     daytime=1
 else
     daytime=0
