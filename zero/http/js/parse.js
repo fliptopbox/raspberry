@@ -2,7 +2,7 @@
 const re = {
     empty: /^$/,
     boolean: /^(true|false)$/i,
-    time: /^([0-2][0-9])([0-5][0-9])([0-5][0-9])?$/,
+    time: /^([0-2][0-9])(?:\:)([0-5][0-9])(?:\:)([0-5][0-9])?$/,
     percent: /^(\d+(\.\d+)?)(%)$/,
     seconds: /^(\d+(\.\d+)?)(\s?s(ec)?.*)$/,
     camel: /^([a-z]+)([A-Z].*)$/
@@ -71,13 +71,11 @@ function primitive(string = '') {
 
     if (re.percent.test(value)) {
         value = value.replace(/%$/, '');
-        value = Number(value) / 100;
+        value = Number(value) / 100 >> 0;
         return value;
     }
 
-    // cast as time. 
-    // TODO change API to use : deliminator for times
-    // WARNING! the regex will match large integers eg. 100101
+    // cast as time, UTC to local timestamp Integer
     temp = value.match(re.time) || [];
     if (temp && temp.length && temp[3]) {
         temp = temp.slice(1, 4).map(v => Number(v));
