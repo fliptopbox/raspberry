@@ -1,6 +1,4 @@
 #!/bin/bash
-
-
 #
 #
 #   ██████   █████  ██    ██ ████████ ██ ███    ███ ███████ 
@@ -36,17 +34,14 @@ if [ "$modified" != "$today" ]; then
     update=true
 fi
 
-
 # The API call only needs to update once per day
 if [ ! -f $dest ] || [ ! -s $update ]; then
     wget $apiurl -O - > $dest
 fi
 
-
 # Extract the civil_twilight_(begin|end) attributes
 # IMPORTANT! the API delivers UTC without seasonal adjustments
 json=`cat $dest | sed -r 's/.*("civ[^,]+").*("civ[^,]+").*/\1;\2/g'`
-
 
 # extract the respective time values
 sunrise=$(echo $json | awk -F";" '{print $1}' | sed -r 's/.*"([^\s]+)".*/\1/g')
@@ -56,18 +51,22 @@ sunset=$(echo $json | awk -F";" '{print $2}' | sed -r 's/.*"([^\s]+)".*/\1/g')
 sunrise=$(date -d "$sunrise-$offset" | awk '{print $4}')
 sunset=$(date -d "$sunset+$offset" | awk '{print $4}')
 
-
 # Determine if time is currently between sunrise/sunset
-# and extract the time value as long (eg. 0345512)
 UTC=`date -u +"%H:%M:%S"`
+
+# Cast the time value as long (eg. 0345512)
 intUTC=$(echo $UTC | sed 's/\://g')
 intSunrise=$(echo $sunrise | sed 's/\://g')
 intSunset=$(echo $sunset | sed 's/\://g')
 
+daytime=0
+
 if [ $intUTC -gt $intSunrise -a $intUTC -lt $intSunset ]; then
     daytime=1
-else
-    daytime=0
 fi
 
-echo "sunrise" $sunrise "sunset" $sunset "UTC" $UTC "daytime" $daytime "update" $update
+echo "sunrise" $sunrise \
+     "sunset" $sunset \
+     "UTC" $UTC \
+     "daytime" $daytime \
+     "update" $update
