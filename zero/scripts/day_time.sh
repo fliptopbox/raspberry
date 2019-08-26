@@ -51,16 +51,15 @@ sunset=$(echo $json | awk -F";" '{print $2}' | sed -r 's/.*"([^\s]+)".*/\1/g')
 sunrise=$(date -d "$sunrise-$offset" | awk '{print $4}')
 sunset=$(date -d "$sunset+$offset" | awk '{print $4}')
 
-# Determine if time is currently between sunrise/sunset
-UTC=`date -u +"%H:%M:%S"`
-
 # Cast the time value as long (eg. 0345512)
+UTC=`date -u +"%H:%M:%S"`
 intUTC=$(echo $UTC | sed 's/\://g')
 intSunrise=$(echo $sunrise | sed 's/\://g')
 intSunset=$(echo $sunset | sed 's/\://g')
 
 daytime=0
 
+# Determine if time is currently between sunrise/sunset
 if [ $intUTC -gt $intSunrise -a $intUTC -lt $intSunset ]; then
     daytime=1
 fi
