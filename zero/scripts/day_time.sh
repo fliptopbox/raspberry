@@ -50,12 +50,12 @@ sunset=$(echo $json | awk -F";" '{print $2}' | sed -r 's/.*"([^\s]+)".*/\1/g')
 
 
 # Convert the AM/PM time to 24hour time and extract the time value as long (eg. 0345512)
-sunrise=$(date -d "$sunrise-$offset" | awk '{print $4}' | sed -r s/\://g)
-sunset=$(date -d "$sunset+$offset" | awk '{print $4}' | sed -r s/\://g)
+sunrise=$(date -d "$sunrise-$offset" | awk '{print $4}')
+sunset=$(date -d "$sunset+$offset" | awk '{print $4}')
 
 # Determine if time is currently between sunrise/sunset
 # IMPORTANT! the API delivers UTC without seasonal adjustments
-UTC=`date -u +"%H%M%S"`
+UTC=`date -u +"%H:%M:%S"`
 if [ $UTC -gt $sunrise -a $UTC -lt $sunset ]; then
     daytime=1
 else

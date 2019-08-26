@@ -1,3 +1,8 @@
+:root {
+    --bg-odd: #171717;
+    --bg-even: #212121;
+}
+
 html {
     height: 100%;
 }
@@ -5,26 +10,27 @@ html {
 body {
     background-image: radial-gradient(
         ellipse at center,
-        #3daef9 8%,
-        #367ebc 18%,
-        #3daef9 22%,
-        #367ebc 38%,
-        #3daef9 42%,
-        #367ebc 58%,
-        #3daef9 62%,
-        #367ebc 78%,
-        #3daef9 82%,
-        #367ebc 98%,
-        #3daef9 102%
+        var(--bg-odd) 0%,
+        var(--bg-even) 20%,
+        var(--bg-odd) 21%,
+        var(--bg-even) 40%,
+        var(--bg-odd) 41%,
+        var(--bg-even) 60%,
+        var(--bg-odd) 61%,
+        var(--bg-even) 80%,
+        var(--bg-odd) 81%,
+        var(--bg-even) 100%,
+        var(--bg-odd) 101%
     );
-    background-size: 100% 100%;
-    background-position: 50% 50%;
+    /* background-size: 100% 100%; */
+    /* background-position: 50% 50%; */
     background-repeat: no-repeat;
     font-family: arial;
     padding: 0;
     margin: 0;
     color: white;
     font-size: 0.5em;
+    background-size: cover;
 }
 
 ul {
