@@ -28,6 +28,8 @@ if [ $1 ]; then
     type=$1
 fi
 
+echo "hello world"
+
 
 while true
 do
@@ -62,14 +64,14 @@ do
     if [ "$awake" -eq "1" ]; then
         case $type in
             still)
-                echo "take still image"
+                echo "log=take still image"
                 hires=$(./single.sh "$zzz" | awk '{print $1}')
                 ;;
 
             bracket)
                 hms=`date -u +"%H%M"`
                 seq=$(./next_frame.sh "$dest" | awk '{print $1}')
-                echo "take bracket sequence: $hms $seq $dest"
+                echo "log=take bracket sequence: $hms $seq $dest"
 
                 hires=$(./bracket.sh \
                      -p $dest \
@@ -84,13 +86,17 @@ do
         ./resize.sh "$hires"
 
     else
-        echo "Sleeping ... $daytime"
+        echo "log=sleeping ... $daytime"
     fi
 
     finish=`date +%s`
     runtime=$((finish-begin))
 
-    ./stats.sh $zzz $runtime
+    echo "log=stats"
+    response=$(./stats.sh $zzz $runtime)
+    echo $response
+
+    echo "log=snooze ... $zzz"
     sleep "${zzz}s"
 
 done

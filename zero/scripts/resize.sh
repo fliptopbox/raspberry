@@ -15,7 +15,7 @@ resizedImage="$relativeCurrent/$filename"
 # it is MUCH quicker to take a new low-res photo 
 # than to resize existing with imagemagick "convert"
 ## convert $1 -resize x1080 $resizedImage
-
+echo "log=resize $resizedImage"
 raspistill \
     -w $resizeWidth \
     -h $resizeHeight \
@@ -28,4 +28,4 @@ raspistill \
 count=`ls $relativeCurrent/*.jpg | wc -l`
 rm `ls -tr $relativeCurrent/*.jpg | head -$(( $count-1 ))` 
 
-echo ">> $resizedImage"
+# echo ">> $resizedImage"
