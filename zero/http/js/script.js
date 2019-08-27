@@ -4,7 +4,6 @@ import footer from './footer.js';
 import Socket from './socket.js';
 
 let state = {
-    welcome: true,
     api: {
         host: '192.168.1.51',
         port: ':8080'
@@ -20,14 +19,44 @@ function render(next) {
 
     console.log(state);
 
-    if(state.welcome) {
-        state.welcome = false;
-        document.querySelector(".welcome")
-            .style.display = "none";
-    }
+    greeting(state);
     footer(state);
     progress(state);
     image(state);
 }
 
 
+function greeting(state) {
+
+    const {stayawake, daytime} = state.time;
+    const alseep = !daytime && !stayawake;
+    const method = alseep ? "add" : "remove";
+
+    document
+        .querySelector("body")
+        .classList[method]("greeting");
+}
+
+window.PI = {
+    grid: (color = null) => {
+        const main = document.querySelector("#main");
+        let overlay = main.querySelector(".overlay");
+        if(!overlay) {
+            overlay = document.createElement("div");
+            overlay.classList.add("overlay");
+            overlay.classList.add("grid");
+            main.prepend(overlay);
+        }
+
+        let toggle = !(state.overlay || false);
+
+        if(color) {
+            toggle = true;
+            overlay.style.setProperty("--ui-grid", color);
+        }
+
+        overlay.style.display = toggle ? "block" : "none";
+        state = {...state, overlay: toggle};
+    }
+
+}

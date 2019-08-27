@@ -12,9 +12,13 @@
     height: 100%;
 }
 
+
+.greeting .welcome {
+    display: block;
+}
 .welcome {
     align-self: auto;
-    display: block;
+    display: none;
     margin: auto;
 }
 .welcome:before {

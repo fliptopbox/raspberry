@@ -8,6 +8,17 @@ html {
 }
 
 body {
+    background: black;
+    font-family: arial;
+    padding: 0;
+    margin: 0;
+    color: white;
+    font-size: 0.5em;
+}
+
+body.greeting {
+    background-repeat: no-repeat;
+    background-size: cover;
     background-image: radial-gradient(
         ellipse at center,
         var(--bg-odd) 0%,
@@ -22,15 +33,6 @@ body {
         var(--bg-even) 100%,
         var(--bg-odd) 101%
     );
-    /* background-size: 100% 100%; */
-    /* background-position: 50% 50%; */
-    background-repeat: no-repeat;
-    font-family: arial;
-    padding: 0;
-    margin: 0;
-    color: white;
-    font-size: 0.5em;
-    background-size: cover;
 }
 
 ul {

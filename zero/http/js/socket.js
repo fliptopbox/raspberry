@@ -14,10 +14,9 @@ class Socket {
 
     socketOnMessage(e) {
         const data = e.data;
-        const array = data.split(/\\n/g);
+        const array = data.split(/&/g);
         const [cmd, string] = array[0].split('=');
         const {triggers} = this;
-
 
         switch (cmd || 'unknown') {
             case 'hello world':

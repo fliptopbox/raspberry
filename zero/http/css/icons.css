@@ -1,3 +1,6 @@
+:root {
+    --ui-grid: #fff;
+}
 
 .icon {
     display: inline-block;
@@ -6,6 +9,7 @@
     width: 1em;
     height: 1em;
     font-size: inherit;
+    position: relative;
 }
 
 .widget l a {
@@ -292,4 +296,78 @@
   background: white;
   border-radius: 50%;
 }
+
+.grid {}
+.grid:before,
+.grid:after {
+    content: "";
+    position: absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    border: 0.1em solid var(--ui-grid);;
+    align-self: center;
+    margin: auto;
+}
+.grid:before {
+  width: 30%;
+  border-width: 0 0.1em;
+}
+.grid:after {
+  height: 30%;
+  border-width: 0.1em 0;
+}
+
+.target {
+    width: 1em;
+    height: 1em;
+    border: 0 solid white;
+    border-width: 0.1em;
+    position: relative;
+    border-radius: 2em;
+}
+
+
+
+.target:after,
+.target:before {
+    position: absolute;
+    border: 0 solid white;
+    left:0;
+    right:0;
+    content: "";
+    height: 0.05em;
+}
+
+.target:before {
+    border-left-width: 0.2em;
+    border-right-width: 0.2em;
+    height: 0.1em;
+    top: 43%;
+}
+
+
+.target:after {
+    border-top-width: 0.2em;
+    border-bottom-width: 0.2em;
+    width: 0.1em;
+    top: 0px;
+    left: 46%;
+    right: auto;
+    bottom: 0;
+    height: unset;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
