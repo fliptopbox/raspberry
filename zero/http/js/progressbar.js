@@ -19,9 +19,13 @@ function progressbar({ sleep }) {
 
     const html = `
         <div class="widget">
-            <span class="icon clock"
-                style="--hour: ${hours}deg; --min: ${minutes}deg;"
-            ></span>
+            <span 
+                class="icon clock"
+                style="
+                    --hour: ${hours}deg;
+                    --min: ${minutes}deg;
+                ">
+            </span>
             <span class="text">${hour}:${minute}</span>
         </div>
         <span class="widget reload">

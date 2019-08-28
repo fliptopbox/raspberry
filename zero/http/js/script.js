@@ -3,6 +3,10 @@ import progress from './progress.js';
 import footer from './footer.js';
 import Socket from './socket.js';
 
+
+window.PI = window.PI || {}
+window.PI.settings = settings;
+
 let state = {
     api: {
         host: '192.168.1.51',
@@ -37,26 +41,11 @@ function greeting(state) {
         .classList[method]("greeting");
 }
 
-window.PI = {
-    grid: (color = null) => {
-        const main = document.querySelector("#main");
-        let overlay = main.querySelector(".overlay");
-        if(!overlay) {
-            overlay = document.createElement("div");
-            overlay.classList.add("overlay");
-            overlay.classList.add("grid");
-            main.prepend(overlay);
-        }
 
-        let toggle = !(state.overlay || false);
-
-        if(color) {
-            toggle = true;
-            overlay.style.setProperty("--ui-grid", color);
-        }
-
-        overlay.style.display = toggle ? "block" : "none";
-        state = {...state, overlay: toggle};
-    }
-
+function settings(key, value) {
+    const msg =`${key}=${value}`;
+    socket.emit(msg);
+    console.log(msg);
 }
+
+

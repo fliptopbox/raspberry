@@ -6,6 +6,12 @@ class Socket {
         this.triggers = {};
         this.socket.onmessage = this.socketOnMessage.bind(this);
         this.on.bind(this);
+        this.emit.bind(this);
+    }
+
+    emit(string) {
+        console.log("emit", string);
+        this.socket.send(string);
     }
 
     on(key, callback) {
