@@ -3,10 +3,6 @@ import progress from './progress.js';
 import footer from './footer.js';
 import Socket from './socket.js';
 
-
-window.PI = window.PI || {}
-window.PI.settings = settings;
-
 let state = {
     api: {
         host: '192.168.1.51',
@@ -17,6 +13,8 @@ let state = {
 const socket = new Socket(`ws://${state.api.host}${state.api.port}`);
 socket.on("data", render);
 
+window.PI = window.PI || {}
+window.PI.settings = settings;
 
 function render(next) {
     state = {...state, ...next};
