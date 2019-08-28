@@ -10,7 +10,7 @@ log="$relativeStats"
 begin=`date +%s`
 created=`date -u +%s`
 expires=$(( created+sleepInterval ))
-datetime=$(date -u +"%Y%m%dT%H:%M:%S") # UTC date
+datetime=$(date -u +"%Y-%m%-dT%H:%M:%S") # UTC date in ISO8601 format
 upsince=$(uptime -s)
 daytime=$(./day_time.sh)
 
@@ -32,7 +32,7 @@ runtime=$(( runtime+localTime ))
 payload="cmd=data"
 payload+="&created=$created"
 payload+="&expires=$expires"
-payload+="&timestamp=$datetime"
+payload+="&timestamp=${datetime}Z"
 payload+="&sleepInterval=$sleepInterval"
 payload+="&serverRuntime=$runtime"
 payload+="&diskDevice=$(echo $disk | awk '{print $1}')"

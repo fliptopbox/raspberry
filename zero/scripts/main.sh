@@ -30,7 +30,7 @@ fi
 
 echo "hello world"
 
-# run the capture loop
+# run the initial capture loop
 ./capture.sh &
 
 
