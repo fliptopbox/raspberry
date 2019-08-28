@@ -7,6 +7,7 @@ class Socket {
         this.socket.onmessage = this.socketOnMessage.bind(this);
         this.on.bind(this);
         this.emit.bind(this);
+        this.log = true;
     }
 
     emit(string) {
@@ -27,6 +28,9 @@ class Socket {
         switch (cmd || 'unknown') {
             case 'hello world':
             case 'log':
+                if (this.log) {
+                    console.log("<<< [%s]", cmd, data);
+                }
                 break;
 
             case 'cmd':

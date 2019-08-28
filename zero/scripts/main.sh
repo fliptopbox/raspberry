@@ -35,8 +35,8 @@ echo "hello world"
 
 
 # Capture WebSocket messages
-while read MSG; 
+while IFS="=" read -r KEY VALUE; 
 do
     # echo "[$(date)] ${USER}> ${MSG}" >> chat.log
-    echo "[$(date)] >>> ${MSG}"
+    echo "[$KEY] >>> ${VALUE}"
 done

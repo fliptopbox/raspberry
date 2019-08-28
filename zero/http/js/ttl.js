@@ -7,8 +7,9 @@ function ttl (next) {
 
     if (!active) return {};
 
-    const [yyyy, mm, dd, hh, mn, ss] = timestamp
-        .split(' ')
+    const [yyyy, mm, dd, hh, mn, ss] = new Date(timestamp)
+        .toISOString()
+        .split(/[\-T\.\:Z]+/g)
         .map(v => Number(v));
 
     const interval = sleep.interval * 1000;

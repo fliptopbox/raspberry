@@ -2,6 +2,7 @@
 const re = {
     empty: /^$/,
     boolean: /^(true|false)$/i,
+    datetime: /(\d{4})\D?(\d{2})\D?(\d{2})\D?(\d{2})\D?(\d{2})\D?(\d{2})\D?/,
     time: /^([0-2][0-9])(?:\:)([0-5][0-9])(?:\:)([0-5][0-9])?$/,
     percent: /^(\d+(\.\d+)?)(%)$/,
     seconds: /^(\d+(\.\d+)?)(\s?s(ec)?.*)$/,
@@ -25,7 +26,7 @@ function parse(payload = '') {
             let [key, value] = row;
 
             key = parentChild(key);
-            value = primitive(value);
+            value = primitive(value, key);
 
             if (key.length === 1) {
                 next[key[0]] = value;
@@ -57,7 +58,7 @@ function parentChild(string) {
 }
 
 export {primitive};
-function primitive(string = '') {
+function primitive(string = '', key = "") {
     let temp;
     let value = `${string}`.trim();
 
@@ -80,6 +81,15 @@ function primitive(string = '') {
     if (temp && temp.length && temp[3]) {
         temp = temp.slice(1, 4).map(v => Number(v));
         temp = Date.UTC(...[1970, 0, 1, ...temp]);
+        return temp;
+    }
+
+    temp = value.match(re.datetime) || [];
+    if(temp && temp.length) {
+        // convert to milisecond timestamp
+        temp = temp.slice(1, 7).map(v => Number(v));
+        temp[1] -= 1; // month is zero based
+        temp = Date.UTC(...temp);
         return temp;
     }
 
