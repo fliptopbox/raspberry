@@ -10,8 +10,8 @@ log="$relativeStats"
 begin=`date +%s`
 created=`date -u +%s`
 expires=$(( created+sleepInterval ))
-datetime=$(date -u +"%Y %m %d %H %M %S") # UTC date
-
+datetime=$(date -u +"%Y%m%dT%H:%M:%S") # UTC date
+upsince=$(uptime -s)
 daytime=$(./day_time.sh)
 
 # Disk and CPU usage
@@ -47,11 +47,10 @@ payload+="&timeUTC=$(echo $daytime | awk '{print $6}')"
 payload+="&timeDaytime=$(echo $daytime | awk '{print $8}')"
 payload+="&timeUpdate=$(echo $daytime | awk '{print $10}')"
 payload+="&timeStayawake=$stayAwake"
-
+payload+="&timeUptime=$upsince"
 payload+="&imageResize=$imageResize"
 payload+="&imageFullsize=$imageFullsize"
 payload+="&imageCount=$imageCount"
-payload+="&."
 
 echo $payload > ${log}
 echo $payload
