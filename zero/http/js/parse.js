@@ -26,7 +26,7 @@ function parse(payload = '') {
             let [key, value] = row;
 
             key = parentChild(key);
-            value = primitive(value, key);
+            value = primitive(value);
 
             if (key.length === 1) {
                 next[key[0]] = value;
@@ -58,7 +58,7 @@ function parentChild(string) {
 }
 
 export {primitive};
-function primitive(string = '', key = "") {
+function primitive(string = '') {
     let temp;
     let value = `${string}`.trim();
 
