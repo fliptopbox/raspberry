@@ -86,7 +86,7 @@ function primitive(string = '') {
 
     temp = value.match(re.datetime) || [];
     if(temp && temp.length) {
-        // convert to milisecond timestamp
+        // convert to date as milisecond timestamp
         temp = temp.slice(1, 7).map(v => Number(v));
         temp[1] -= 1; // month is zero based
         temp = Date.UTC(...temp);

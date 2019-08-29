@@ -8,6 +8,10 @@ function grid() {
     return html;
 }
 
+let state = {
+    overlay: false
+}
+
 window.PI = window.PI || {};
 window.PI.grid = function(color = null) {
     const main = document.querySelector('#main');
