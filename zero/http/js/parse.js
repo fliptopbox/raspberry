@@ -25,8 +25,11 @@ function parse(payload = '') {
         .forEach(row => {
             let [key, value] = row;
 
+
+            console.log(1,key, value)
             key = parentChild(key);
             value = primitive(value);
+            console.log(2,key, value)
 
             if (key.length === 1) {
                 next[key[0]] = value;
@@ -72,7 +75,8 @@ function primitive(string = '') {
 
     if (re.percent.test(value)) {
         value = value.replace(/%$/, '');
-        value = Number(value) / 100 >> 0;
+        value = Number(value) * 100 >> 0;
+        value = value / 100;
         return value;
     }
 

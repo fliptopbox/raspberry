@@ -1,6 +1,6 @@
 export default usage;
 function usage({ disk }) {
-    const percent = disk.percent * 100;
+    const percent = disk.percent;
     const fith = (percent / 20) >> 0;
     const colors = ['green', 'green', 'orange', 'red', 'black'];
     const color = colors[fith];
