@@ -3,7 +3,9 @@
 
 Runs camera for specific time, and take JPG capture at end if requested
 
-usage| raspistill [options]
+### usage:
+
+`raspistill [options]`
 
 ## Image parameter commands
 
