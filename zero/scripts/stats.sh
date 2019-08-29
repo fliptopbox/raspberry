@@ -33,21 +33,28 @@ payload="cmd=data"
 payload+="&created=$created"
 payload+="&expires=$expires"
 payload+="&timestamp=${datetime}Z"
-payload+="&sleepInterval=$sleepInterval"
+
+
 payload+="&serverRuntime=$runtime"
+payload+="&serverUptime=$upsince"
+payload+="&serverCPU=$cpu"
+
 payload+="&diskDevice=$(echo $disk | awk '{print $1}')"
 payload+="&diskTotal=$(echo $disk | awk '{print $2}')"
 payload+="&diskAvail=$(echo $disk | awk '{print $3}')"
 payload+="&diskUsed=$(echo $disk | awk '{print $4}')"
 payload+="&diskPercent=$(echo $disk | awk '{print $5}')"
-payload+="&cpuLoad=$cpu"
+
 payload+="&timeSunrise=$(echo $daytime | awk '{print $2}')"
 payload+="&timeSunset=$(echo $daytime | awk '{print $4}')"
 payload+="&timeUTC=$(echo $daytime | awk '{print $6}')"
 payload+="&timeDaytime=$(echo $daytime | awk '{print $8}')"
 payload+="&timeUpdate=$(echo $daytime | awk '{print $10}')"
+payload+="&timeInterval=$sleepInterval"
 payload+="&timeStayawake=$stayAwake"
-payload+="&timeUptime=$upsince"
+
+payload+="&sleepInterval=$sleepInterval"
+
 payload+="&imageResize=$imageResize"
 payload+="&imageFullsize=$imageFullsize"
 payload+="&imageCount=$imageCount"
