@@ -15,7 +15,7 @@ Runs camera for specific time, and take JPG capture at end if requested
 | -r, --raw          | Add raw bayer data to jpeg metadata |
 | -l, --latest       | Link latest complete image to filename <filename>|
 | -t, --timeout      | Time (in ms) before takes picture and                        |
-| -th, --thumb       | Set thumbnail parameters (x/y/quality) or none               |
+| -th, --thumb       | Set thumbnail parameters (x:y:quality) or none             |
 | -d, --demo         | Run a demo mode (cycle through range of camera options, no capture) |
 | -e, --encoding     | Encoding to use for output file (jpg, bmp, gif, png)         |
 | -x, --exif         | EXIF tag to apply to captures (format as 'key=value') or none |
@@ -73,7 +73,7 @@ Runs camera for specific time, and take JPG capture at end if requested
 |-fli, --flicker	| Set flicker avoid mode (see Notes) |
 |-awb, --awb	| Set AWB mode (see Notes) |
 |-ifx, --imxfx	| Set image effect (see Notes) |
-|-cfx, --colfx	| Set colour effect (U|V) |
+|-cfx, --colfx	| Set colour effect (U|
 |-mm, --metering	| Set metering mode (see Notes) |
 |-rot, --rotation	| Set image rotation (0-359) |
 |-hf, --hflip	| Set horizontal flip |
