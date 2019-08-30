@@ -16,13 +16,26 @@ resizedImage="$relativeCurrent/$filename"
 # than to resize existing with imagemagick "convert"
 ## convert $1 -resize x1080 $resizedImage
 echo "log=resize $resizedImage"
+
 raspistill \
+    -o $resizedImage \
     -w $resizeWidth \
     -h $resizeHeight \
     -t $cameraTimeout \
+    -e $encoding \
+    -ex $exposure \
+    -ev $ev \
+    -awb $awb \
+    -sh $sharpness \
+    -co $contrast \
+    -sa $saturation \
+    -br $brightness \
+    -ifx $imxfx \
+    -mm $metering \
+    -rot $rotation \
+    -drc $drc \
     -ISO $ISO \
-    -q $jpgQuality \
-    -o $resizedImage
+    -q $quality
 
 # Delete older files AFTER we have a replacement
 count=`ls $relativeCurrent/*.jpg | wc -l`

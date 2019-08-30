@@ -4,12 +4,6 @@
 # Q=`dirname "${this}"`
 # . "$Q/config.sh"
 
-# remoteRsyncServer="bruce@lithium"
-# remoteImageDest="Projects/github/raspberry/zero/images"
-# relativeImages="../images"
-# relativeStills="../images/still"
-# sleepInterval=$(( 1*60 )) # seconds
-
 
 . ./config.sh
 
@@ -36,11 +30,22 @@ filename="$prefix-$mtime-$next.jpg"
 nextfile="$dest$filename"
 
 raspistill \
+    -o $nextfile \
     -t $cameraTimeout \
+    -e $encoding \
+    -ex $exposure \
+    -ev $ev \
+    -awb $awb \
+    -sh $sharpness \
+    -co $contrast \
+    -sa $saturation \
+    -br $brightness \
+    -ifx $imxfx \
+    -mm $metering \
+    -rot $rotation \
+    -drc $drc \
     -ISO $ISO \
-    -q $jpgQuality \
-    -o $nextfile
-
+    -q $quality
 
 now=$(date -u +"%H:%M:%S") # UTC date
 echo "$nextfile ($free) $now ${delay}s"

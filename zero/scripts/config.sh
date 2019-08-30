@@ -10,16 +10,41 @@ relativeCurrent="$relativeImages/current"
 relativeData="../data"
 relativeStats="$relativeData/stats.v2.txt"
 
-stayAwake=false # do not sleep at night
 intervalMinutes=1
-sleepInterval=$(( $intervalMinutes*60 )) # value as seconds
 
-lat=51.5465589
-lng=-0.0352543
+# UI editable settings
 
-ISO=400
+# camera arguments
+encoding=jpg
+exposure=off
+ev=0
+awb=off
+sharpness=0
+contrast=0
+saturation=25
+brightness=50
+imxfx=none
+metering=average
+rotation=0
+drc=off
+ISO=600
+quality=100
+
+
+# proxy settings
+stayAwake=true
+sleepInterval=30
 jpgQuality=100
 cameraTimeout=3 # as seconds
 resizeAmount=3
-resizeWidth=$(( 3280/$resizeAmount ))
-resizeHeight=$(( 2464/$resizeAmount ))
+
+# sunrise/sunset geolocation
+lat=51.5465589
+lng=-0.0352543
+
+# relative size calculation
+fullsizeWidth=3280
+fullsizeHeight=2464
+
+resizeWidth=$(( $fullsizeWidth/$resizeAmount ))
+resizeHeight=$(( $fullsizeHeight/$resizeAmount ))
