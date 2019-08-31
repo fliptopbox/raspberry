@@ -13,20 +13,21 @@
 }
 
 .widget l a {
-  text-decoration: none;
-  color: white;
+    text-decoration: none;
+    color: white;
 }
 
 .usage {
-    width: 3em;
+    width: 3.5em;
     overflow: hidden;
     position: relative;
     height: 1.2em;
+    border-radius: 1em;
     background: linear-gradient(
         to right,
         var(--bgcolor) var(--width),
-        #444 var(--width),
-        #444 var(--width)
+        #111 var(--width),
+        #111 var(--width)
     );
 }
 
@@ -37,7 +38,7 @@
     top: 0;
     bottom: 0;
     border: solid rgba(0, 0, 0, 0.8);
-    border-width: 0 0.05em;
+    border-width: 0 0.03em;
     left: 20%;
     right: 20%;
 }
@@ -197,126 +198,119 @@
 }
 .sun,
 .moon {
-    border: 0.1em solid black;
+    border: 0em solid #FFFFFF;
 }
 
 .moon {
     background: radial-gradient(
-        ellipse at 40% 40%,
-        #212451 50%,
-        #b2e1ff 60%,
-        #ffffff 70%
+        ellipse at 38% 38%,
+        #000000 50%,
+        #000000 50%,
+        #ffffff 60%
     );
     border-radius: 1em;
-    box-shadow: 0 0 15px -3px #2191f5;
 }
 
 .sun {
     background: radial-gradient(
         ellipse at 50% 50%,
         #ffffff 10%,
-        #edd500 50%,
-        #feb645 65%
+        #FFFFFF 50%,
+        #FFFFFF 65%
     );
     border-radius: 1em;
-    box-shadow: 0 0 15px -3px #edd500;
+    border: 0.1em dotted black;
 }
 .picture {
     position: relative;
-    border: 0.15em solid;
-    border-color: 
-        rgba(87, 58, 11, 1) 
-        rgba(87, 58, 11, 1) 
-        rgba(120, 86, 31, 1)
-        rgba(120, 86, 31, 1);
-
-    background: linear-gradient(
-        to top,
-        #337c36 0%,
-        #52f26d 33%,
-        #a8e2ff 42%,
-        #6b97ff 100%
-    );
+    border: 0.1em solid white;
+    background: balck;
 }
 
 .picture:before {
     content: '';
-    width: 0.2em;
-    height: 0.2em;
+    width: 0.65em;
+    height: 0.4em;
     position: absolute;
-    top: 0;
-    background: yellow;
-    border-radius: 1em;
-    box-shadow: 0 0 0.3em 0 white;
-    margin: 0.13em 0 0 0.15em;
+    top: 0.45em;
+    left: 0.1em;
+    transform: rotate(-45deg);
+    border: 0 solid white;
+    border-radius: 0 0.3em 0 0;
+    border-width: 0.1em 0.1em 0 0;
 }
 
 .picture:after {
     position: absolute;
     content: '';
+    top: 0.1em;
+    bottom: 0;
+    left: 0.1em;
+    right: 0;
+    width: 0.22em;
+    height: 0.22em;
+    border-radius: 0.5em;
+    background: white;
+
+}
+
+.refresh {
+    color: #fff;
+    position: relative;
+    margin-left: 0.1em;
+    margin-top: 0.1em;
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    border: 0.1em solid white;
+    border-left-color: transparent;
+}
+
+.refresh.icon:before {
+    content: '';
+    position: absolute;
+    left: 0.01em;
+    top: 0.65em;
+    width: 0.1em;
+    height: 0.1em;
+    border-top: solid 0.15em #FFFFFF;
+    border-left: solid 0.15em #FFFFFF;
+    -webkit-transform: rotate(-22.5deg);
+    transform: rotate(-22.5deg);
+}
+.refresh.icon:after {
+    content: '';
+    position: absolute;
+    width: 0.3em;
+    height: 0.3em;
+    left: 0.26em;
+    top: 0.24em;
+    background: white;
+    border-radius: 50%;
+}
+
+.grid {
+    cursor: pointer;
+}
+.grid:before,
+.grid:after {
+    content: '';
+    position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-    border: 0.01em solid rgba(0, 0, 0, 0.5);
-}
-
-
-.refresh {
-  color: #FFF;
-  position: relative;
-  margin-left: 0.1em;
-  margin-top: 0.1em;
-  width: 1em;
-  height: 1em;
-  border-radius: 50%;
-  border: 0.1em solid white;
-  border-left-color: transparent;
-}
-
-.refresh.icon:before {
-  content: '';
-  position: absolute;
-  left: 0.01em;
-  top: 0.65em;
-  width: 0.1em;
-  height: 0.1em;
-  border-top: solid 0.15em currentColor;
-  border-left: solid 0.15em currentColor;
-  -webkit-transform: rotate(-22.5deg);
-          transform: rotate(-22.5deg);
-}
-.refresh.icon:after {
-  content: '';
-  position: absolute;
-  width: 0.3em;
-  height: 0.3em;
-  left: 0.26em;
-  top: 0.24em;
-  background: white;
-  border-radius: 50%;
-}
-
-.grid {}
-.grid:before,
-.grid:after {
-    content: "";
-    position: absolute;
-    top:0;
-    bottom:0;
-    left:0;
-    right:0;
-    border: 0.1em solid var(--ui-grid);;
+    border: 0.1em solid var(--ui-grid);
     align-self: center;
     margin: auto;
 }
 .grid:before {
-  width: 30%;
-  border-width: 0 0.1em;
+    width: 30%;
+    border-width: 0 0.1em;
 }
 .grid:after {
-  height: 30%;
-  border-width: 0.1em 0;
+    height: 30%;
+    border-width: 0.1em 0;
 }
 
 .target {
@@ -328,15 +322,13 @@
     border-radius: 2em;
 }
 
-
-
 .target:after,
 .target:before {
     position: absolute;
     border: 0 solid white;
-    left:0;
-    right:0;
-    content: "";
+    left: 0;
+    right: 0;
+    content: '';
     height: 0.05em;
 }
 
@@ -346,7 +338,6 @@
     height: 0.1em;
     top: 43%;
 }
-
 
 .target:after {
     border-top-width: 0.2em;
@@ -360,14 +351,68 @@
 }
 
 
+.settings {
+    transform: rotate(90deg);
+    cursor: pointer;
+}
+.settings:before {
+    content: "";
+    position: absolute;
+    width: 0.1em;
+    height: 1em;
+    margin-left: 0.15em;
+    background: #fff;
+    box-shadow: 
+        0.3em 0 0 0 #fff,
+        0.6em 0 0 0 #fff;
+}
+
+.settings:after {
+    background: #fff;
+    content: "";
+    position: absolute;
+    border-radius: 0.5em;
+    width: 0.25em;
+    height: 0.25em;
+    margin-left: 0.08em;
+    box-shadow: 
+        0.3em 0.6em 0 0 #fff,
+        0.6em 0.21em 0 0 #fff;
 
 
+}
 
+.menu {
+    transform: rotate(90deg);
+}
+.menu:before {
+    content: "";
+    position: absolute;
+    width: 0.1em;
+    height: 0.6em;
+    margin-top: 0.2em;
+    margin-left: 0.15em;
+    background: #fff;
+    box-shadow: 
+        0.3em 0 0 0 #fff,
+        0.6em 0 0 0 #fff;
+}
 
-
-
-
-
-
-
-
+.close {
+    transform: rotate(45deg);
+}
+.close:before,
+.close:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 45%;
+    bottom: 0;
+    display: block;
+    width:0.11em;
+    height:1em;
+    background: white;
+}
+.close:after {
+    transform: rotate(90deg);
+}

@@ -4,7 +4,6 @@ function suntime({ time }) {
     const hhmm = /(\d+:\d+)/g;
     sunset = new Date(sunset).toString().match(hhmm)[0];
     sunrise = new Date(sunrise).toString().match(hhmm)[0];
-    console.log(sunset, sunrise);
 
     const html = `
         <div class="widget">
