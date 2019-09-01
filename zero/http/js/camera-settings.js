@@ -24,11 +24,30 @@ export default {
     },
     interval: {
         name: "Camera Interval",
-        min:30,
-        max: 360,
-        value: 3 * 60, 
+        min: 10,
+        max: 60 * 60,
+        value: 3 * 60,
         step: 10,
-        unit: 's'
+        unit: 's',
+        format: (value, unit) => {
+            value = Number(value);
+            unit = "sec";
+
+            let minutes = 0;
+            let seconds = value;
+            let text = `${seconds}${unit}`;
+
+            if(value > 60) {
+                unit = "min"
+                value /= 60;
+                minutes = value >> 0;
+                seconds = Math.round((value - minutes) * (60)) >> 0
+                seconds = `00${seconds}`.slice(-2);
+                text = `${minutes}:${seconds}`;
+            }
+
+            return `${text}`;
+        }
     },
     ISO: {
         min:50,

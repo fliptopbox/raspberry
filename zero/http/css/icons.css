@@ -21,7 +21,7 @@
     width: 3.5em;
     overflow: hidden;
     position: relative;
-    height: 1.2em;
+    height: 0.8em;
     border-radius: 1em;
     background: linear-gradient(
         to right,
@@ -305,12 +305,14 @@
     margin: auto;
 }
 .grid:before {
-    width: 30%;
+    width: 33.333%;
     border-width: 0 0.1em;
+    box-shadow: 0 1px 0 1px black;
 }
 .grid:after {
-    height: 30%;
+    height: 33.333%;
     border-width: 0.1em 0;
+    box-shadow: 1px 0 0 1px black;
 }
 
 .target {

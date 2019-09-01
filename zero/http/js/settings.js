@@ -134,11 +134,12 @@ function getValue(id, object) {
 }
 
 function inputOnInput(e, object) {
-    console.log(e);
     const id = e.target.id;
     object.value = e.target.value;
     const [_, value] = getValue(id, object);
-    document.querySelector(`#${id}_value`).innerHTML = value;
+    const {unit = ""} = object;
+    let string = object.format ? object.format(value, unit) : `${value}${unit}`;
+    document.querySelector(`#${id}_value`).innerHTML = `${string}`;
 }
 
 function inputOnChange(e, object) {
@@ -146,6 +147,5 @@ function inputOnChange(e, object) {
     object.value = e.target.value;
     const [_, value] = getValue(id, object);
     const msg = `${id}=${value}`;
-    console.log(111, id, value);
     local.socket.emit(msg);
 }
