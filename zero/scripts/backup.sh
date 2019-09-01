@@ -10,17 +10,34 @@ Q=`dirname "${this}"`
 # then delete the local files, to free drive space.
 # Afterwards remove and empty folders.
 
-dst="$remoteRsyncServer:$remoteImageDest"
-src="$relativeImages/"
+if [ -z ${rsyncLogin+x} ]; then
+    echo "log=backup;exit;require remote login ($rsyncLogin)"
+    exit
+fi
 
-# Keep two days of images
+# prevent multiple instances
+today=$(date -u +"%Y%m%d")
+if [ $today -eq $rsyncBackup ]; then
+    echo "log=backup;exit;already completed ($today:$rsyncBackup)"
+    exit
+fi
+
+# update config with today's date
+sed -i  "s/rsyncBackup=.*/rsyncBackup=${today}/g" config.sh
+
+
+
+# Keep one day of images (ie today)
 today=$(date -u +"%Y/%m/%d/") # UTC date
 yesterday=$(date -u -d "yesterday" +"%Y/%m/%d/") # UTC date
 
-echo $today
-echo $yesterday
-echo $dst
-echo $src
+echo "log=backup;ok;date=$today"
+
+dst="$rsyncLogin:$rsyncDest"
+echo "log=backup;ok;dst=$dst"
+
+src="$rsyncSource/"
+echo "log=backup;ok;src=$src"
 
 # REMEMBER ... using rsync with the dry-run (n) flag and 
 # --remove-source-files, together causes the rsync on MacOS to fail
@@ -36,4 +53,6 @@ rsync -ruvz \
 # clean up empty folders (not achieveable as an rsync option)
 find $src -depth -type d -empty -delete
 
+
+echo "log=backup;ok;complete"
 
