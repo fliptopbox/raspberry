@@ -7,6 +7,8 @@ function ttl (next) {
 
     if (!active) return {};
 
+    console.log(timestamp)
+
     const [yyyy, mm, dd, hh, mn, ss] = new Date(timestamp)
         .toISOString()
         .split(/[\-T\.\:Z]+/g)

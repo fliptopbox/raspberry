@@ -2,6 +2,7 @@ import image from './image.js';
 import progress from './progress.js';
 import footer from './footer.js';
 import Socket from './socket.js';
+import settings from './settings.js';
 
 let state = {
     api: {
@@ -14,7 +15,7 @@ const socket = new Socket(`ws://${state.api.host}${state.api.port}`);
 socket.on("data", render);
 
 window.PI = window.PI || {}
-window.PI.settings = settings;
+window.PI.settings = settings(socket, getState);
 
 function render(next) {
     state = {...state, ...next};
@@ -39,11 +40,7 @@ function greeting(state) {
         .classList[method]("greeting");
 }
 
-
-function settings(key, value) {
-    const msg =`${key}=${value}`;
-    socket.emit(msg);
-    console.log(msg);
+function getState () {
+    return {...state}
 }
-
 
