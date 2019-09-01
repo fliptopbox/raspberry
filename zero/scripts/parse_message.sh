@@ -13,7 +13,7 @@ save_config () {
     local VALUE=$2
 
     sed -i  "s/${NAME}=.*/${NAME}=${VALUE}/g" config.sh
-    echo "log=Change ${NAME} to ${VALUE}"
+    echo "log=Change [${NAME}] to [${VALUE}]"
 
 }
 
@@ -22,33 +22,28 @@ case $KEY in
         echo "log=$KEY <<< ${VALUE}"
         ;;
 
-    encoding|\
     exposure|\
     ev|\
-    awb|\
     sharpness|\
     contrast|\
     saturation|\
     brightness|\
-    imxfx|\
-    metering|\
     rotation|\
-    drc|\
     ISO|\
+    interval|\
     quality)
+        # Numeric values
         save_config "$KEY" "$VALUE"
         ;;
 
-    quality)
-        save_config "jpgQuality" "$VALUE"
-        ;;
-
-    iso)
-        save_config "ISO" "$VALUE"
-        ;;
-
-    interval)
-        save_config "sleepInterval" "$VALUE"
+    awb|\
+    drc|\
+    encoding|\
+    exposure|\
+    imxfx|\
+    metering)
+        # ENUM (string) values
+        save_config "$KEY" "$VALUE"
         ;;
 
     stayawake)
@@ -59,7 +54,7 @@ case $KEY in
             TEMP=true
         fi
 
-        save_config "sleepInterval" "$TEMP"
+        save_config "stayAwake" "$TEMP"
         ;;
 
     *)

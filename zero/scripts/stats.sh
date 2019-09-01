@@ -10,7 +10,7 @@ log="$relativeStats"
 begin=`date +%s`
 created=`date -u +%s`
 expires=$(( created+sleepInterval ))
-datetime=$(date -u +"%Y-%m%-dT%H:%M:%S") # UTC date in ISO8601 format
+datetime=$(date -u +"%Y-%m-%dT%H:%M:%S") # UTC date in ISO8601 format
 upsince=$(uptime -s)
 daytime=$(./day_time.sh)
 
@@ -58,6 +58,24 @@ payload+="&sleepInterval=$sleepInterval"
 payload+="&imageResize=$imageResize"
 payload+="&imageFullsize=$imageFullsize"
 payload+="&imageCount=$imageCount"
+
+
+payload+="&settingsAwb=$awb"
+payload+="&settingsDrc=$drc"
+payload+="&settingsEncoding=$encoding"
+payload+="&settingsExposure=$exposure"
+payload+="&settingsImxfx=$imxfx"
+payload+="&settingsMetering=$metering"
+
+payload+="&settingsISO=$ISO"
+payload+="&settingsBrightness=$brightness"
+payload+="&settingsContrast=$contrast"
+payload+="&settingsEv=$ev"
+payload+="&settingsInterval=$interval"
+payload+="&settingsQuality=$quality"
+payload+="&settingsRotation=$rotation"
+payload+="&settingsSaturation=$saturation"
+payload+="&settingsSharpness=$sharpness"
 
 echo $payload > ${log}
 echo $payload
