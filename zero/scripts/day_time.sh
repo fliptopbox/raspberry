@@ -24,7 +24,7 @@ apiurl="https://api.sunrise-sunset.org/json?lat=$lat&lng=$lng&date=today"
 dest="$relativeData/sunrise-sunset.json"
 
 # time offset to before/after the sunrise/sunset event
-offset="30 minutes"
+offset="15 minutes"
 
 # check modified date against roday's date
 modified=`date -r $dest +"%m%d"`

@@ -1,6 +1,5 @@
 #!/bin/bash
-
-#    
+#
 #     ██████████   ██████   ██ ███████
 #    ░░██░░██░░██ ░░░░░░██ ░██░░██░░░██
 #     ░██ ░██ ░██  ███████ ░██ ░██  ░██
@@ -8,7 +7,7 @@
 #     ███ ░██ ░██░░████████░██ ███  ░██
 #    ░░░  ░░  ░░  ░░░░░░░░ ░░ ░░░   ░░
 #
-#   
+#
 #   1.  Runs and infinte loop that takes a photo
 #   2.  Creates the daily folder destination
 #   3.  Once a day grabs the sunrise-sunset.json

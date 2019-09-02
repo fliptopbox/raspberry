@@ -28,7 +28,7 @@ ISO=50
 brightness=50
 contrast=0
 ev=0
-interval=300
+interval=180
 timeout=3
 quality=100
 rotation=0
@@ -38,7 +38,7 @@ sharpness=0
 # helper settings/values
 reduction=3
 preview=false
-bracket=0
+bracket=1
 
 
 # proxy settings

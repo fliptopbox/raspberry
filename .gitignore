@@ -6,3 +6,4 @@ images/
 */data/
 .DS*
 *.vim
+*.log
