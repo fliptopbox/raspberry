@@ -32,7 +32,7 @@ mkdir -p $path
 
 # Bracketing range
 ev="0"
-fstops=$(( 24 / brackets ))
+fstops=$(( 25 / brackets ))
 range=$(( $brackets + $brackets + 1 ))
 
 log="./bracket.log"
@@ -66,7 +66,7 @@ while [ $ev -lt $range ]; do
         current=$output
     fi
 
-    echo "$exposure ($output)" > $log
+    echo "$exposure $ev ($output)" >> $log
 
 done
 

@@ -41,8 +41,7 @@ if [ $forcereload == false ] && [ -f "$relativeStats" ]; then
         echo "log=using cache"
         echo -e `cat $relativeStats`
 
-        echo "log=retry in (${datediff}"
-
+        echo "log=retry in (${datediff})"
         sleep "${datediff}s"
     fi
 fi
@@ -110,6 +109,11 @@ echo "" > $relativeStats
 # rm $relativeStats
 
 if [ "$forcereload" == "false" ]; then
+    # TODO seperate capture and backup routines
+    ./backup.sh &
+
     echo "log=capture;creating new thread"
     ./capture.sh
 fi
+
+
