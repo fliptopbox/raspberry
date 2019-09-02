@@ -22,6 +22,7 @@ case $KEY in
         echo "log=$KEY <<< ${VALUE}"
         ;;
 
+    bracket|\
     exposure|\
     ev|\
     sharpness|\
@@ -46,15 +47,19 @@ case $KEY in
         save_config "$KEY" "$VALUE"
         ;;
 
+    preview|\
     stayawake)
-        echo "log=Change stayawake from ${stayAwake} to ${VALUE}"
 
         TEMP=false
         if [ $VALUE == true ]; then
             TEMP=true
         fi
 
-        save_config "stayAwake" "$TEMP"
+        if [ "$KEY" == "stayAwake" ]; then
+            KEY=stayAwake
+        fi
+
+        save_config "$KEY" "$TEMP"
         ;;
 
     *)
@@ -62,3 +67,13 @@ case $KEY in
         ;;
 esac
 
+case $KEY in
+
+    interval|\
+    preview)
+
+        echo "log=parse;force reload;$KEY=$VALUE"
+        ./capture.sh "force" &
+        ;;
+
+esac
