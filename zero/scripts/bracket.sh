@@ -35,6 +35,10 @@ ev="0"
 fstops=$(( 24 / brackets ))
 range=$(( $brackets + $brackets + 1 ))
 
+log="./bracket.log"
+echo "" > $log
+
+
 # Generate the bracketed photos
 while [ $ev -lt $range ]; do
 
@@ -61,6 +65,9 @@ while [ $ev -lt $range ]; do
     if [ $exposure -eq 0 ]; then
         current=$output
     fi
+
+    echo "$exposure ($output)" > $log
+
 done
 
 echo $current $range
