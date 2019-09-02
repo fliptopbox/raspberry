@@ -25,7 +25,7 @@ export default {
     interval: {
         name: "Camera Interval",
         min: 10,
-        max: 60 * 60,
+        max: 5 * 60,
         value: 3 * 60,
         step: 10,
         unit: 's',
@@ -141,5 +141,37 @@ export default {
             'colourbalance',
             'cartoon'
         ]
+    },
+    reduction: {
+        name: "BG resize",
+        min: 1,
+        max: 10,
+        value: 3,
+        enum: [1,2,3,4,5,10],
+        format(value) {
+            value = Number(value);
+            let perc = 1/value * 100 >> 0;
+            return `${perc}%`;
+        }
+    },
+    preview: {
+        min: 0,
+        max: 1,
+        value: 0,
+        enum: ["false", "true"]
+    },
+    bracket: {
+        min: 0,
+        max: 4,
+        value: 0,
+        format(value) {
+            value = Number(value);
+            const max = 24;
+            const ev = max / value >> 0;
+            // const count = (value * 2) + 1;
+            let html = `${value} EV±${ev}`;
+            html = value ? html : "None";
+            return html;
+        }
     }
 };

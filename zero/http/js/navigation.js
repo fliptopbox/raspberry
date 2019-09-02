@@ -5,7 +5,7 @@ function navigation({ api, image }) {
     const html = `
         <span class="widget">
             <span class="icon picture"></span>
-            <a href="${url}/${fullsize}" class="text">
+            <a href="${url}/${fullsize}" target="remote" class="text">
                 ${image.count}
             </a>
         </span>

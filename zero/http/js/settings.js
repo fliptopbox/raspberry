@@ -61,7 +61,7 @@ function overlay() {
 
 function saveKeyValue(key, value) {
     const msg = `${key}=${value}`;
-    socket.emit(msg);
+    local.socket.emit(msg);
 }
 
 function inputs(overlay) {
@@ -72,10 +72,8 @@ function inputs(overlay) {
 
     // augment with persisted values
     Object.keys(options).forEach(id => {
-        // let array = options[id];
         const { settings } = state || {};
         if (settings[id]) {
-            // array[2] = settings[id];
             options[id].value = settings[id];
         }
         parent.append(slider(id, options[id]));
@@ -84,12 +82,12 @@ function inputs(overlay) {
 
 function slider(id, object) {
     const el = document.createElement('div');
-    let {min, max, value, step = null, unit = '', name = null} = object;
+    let {min, max, step = null, unit = '', name = null} = object;
     let labels = object.enum || null;
 
     name = name || id.replace(/(\w)(.*)/, (g0, g1, g2) => (g1.toUpperCase() + g2));
     step = step ? `step="${step}"` : '';
-    let [index, string] = getValue(id, object);
+    let [index, value] = getValue(id, object);
 
     if(labels) {
         min = 0;
@@ -97,7 +95,10 @@ function slider(id, object) {
         step = 1;
     }
 
-    console.log(object);
+    // apply value formating
+    value = object.format ? 
+        object.format(value) : 
+        (`${value}${unit}`);
 
     el.classList.add('row');
     el.innerHTML = `
@@ -108,7 +109,7 @@ function slider(id, object) {
              min="${min}" max="${max}" ${step}
              value="${index}"
           >
-          <span class="value" id="${id}_value">${string}${unit}</span>
+          <span class="value" id="${id}_value">${value}</span>
         </div>
     `;
     const io = el.querySelector('input');
@@ -146,6 +147,5 @@ function inputOnChange(e, object) {
     const id = e.target.id;
     object.value = e.target.value;
     const [_, value] = getValue(id, object);
-    const msg = `${id}=${value}`;
-    local.socket.emit(msg);
+    saveKeyValue(id, value);
 }

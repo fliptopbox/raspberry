@@ -1,18 +1,21 @@
 import parse from './parse.js';
 
+let socket;
+
 class Socket {
     constructor(server) {
-        this.socket = new WebSocket(server);
+        socket = new WebSocket(server);
         this.triggers = {};
-        this.socket.onmessage = this.socketOnMessage.bind(this);
+        socket.onmessage = this.socketOnMessage.bind(this);
         this.on.bind(this);
-        this.emit.bind(this);
+        //this.emit.bind(this);
         this.log = true;
+        window.ws = socket;
     }
 
     emit(string) {
         console.log("emit", string);
-        this.socket.send(string);
+        socket.send(string);
     }
 
     on(key, callback) {
