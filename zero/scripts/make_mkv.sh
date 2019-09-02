@@ -20,8 +20,8 @@
 #
 #
 
-width=720
-height=480
+width=1920
+height=1080
 path="../images/still/"
 
 
@@ -35,18 +35,21 @@ while getopts ":p:w:h:" opt; do
     esac
 done
 
-parent=$(echo `pwd` | sed -r 's/\/([^\/]+)$//');
-folder=$(echo "$path" | sed -r 's/(^[^\/]+)//')
+parent=$(echo `pwd` | sed -E 's/\/[a-z]+$//')
+folder=$(echo "$path" | sed 's/\.\.//')
 images="${parent}${folder}"
-output="${images}clip-${width}x${height}.mkv"
+tmp="${images}/ffmpeg_frames.txt"
 
-tmp="${parent}/ffmpeg_frames.txt"
+# find $images -regex ".*jpg$" -print0 | xargs -0 echo "file %i\n" | sort -V > $tmp
+find $images -regex ".*jpg$" | sort > $tmp
+sed -i -e 's/^/file /' $tmp
 
-find $images -regex ".*jpg$" -printf "file %p\n" | sort -V > $tmp
+frames=$(wc -l $tmp | awk '{print $1}')
+output="${images}clip-f${frames}-${width}x${height}.mkv"
 
-# ffmpeg -f concat -safe 0 -i <(find images/ -regex ".*jpg$" -printf "file `pwd`/%p\n" | sort -V) -vf scale=640x480 text.mkv
-ffmpeg -y -f concat -safe 0 -i $tmp -vf scale=${width}x${height} $output
 
-rm $tmp
+ffmpeg -hide_banner -y -f concat -safe 0 -i $tmp -vf scale=${width}x${height} $output
+cat $tmp
+# rm $tmp
 
 
