@@ -1,29 +1,37 @@
 #!/bin/bash
 
-# The destination sub-directory
-# eg. "bracket", "still"
-type="still"
-
-if [ $1 ]; then
-    type=$1
-fi
-
 
 . config.sh
 
+
+forcereload=false
+
 # Image destination (relative)
-root="$relativeImages/$type/"
+# The destination sub-directory
+# eg. "bracket", "still"
+
+capturetype="still"
+if [ $bracket -gt 0 ]; then
+    capturetype="bracket"
+fi
+
+root="$relativeImages/$capturetype/"
 
 # Sleep time in seconds
 zzz="$sleepInterval"
 
+if [ "$1" == "force" ]; then
+    forcereload=true
+    echo "" > $relativeStats
+    echo "log=capture;force reload"
+fi
 
 # if the stats file already exist ...
 # 1. then check the expires date, 
 # 2. output the existing stats.txt (ie cache)
 # 3. sleep until the current cache expires
 
-if [ -f "$relativeStats" ]; then
+if [ $forcereload == false ] && [ -f "$relativeStats" ]; then
     now=`date -u +%s`
     expires=$(cat $relativeStats | sed -En "s/(.*)expires=([0-9]+)(.*)/\2/p")
     datediff=$(( expires-now ))
@@ -54,12 +62,12 @@ fi
 daytime=$(./day_time.sh $refresh)
 awake=$(echo $daytime | awk '{print $8}')
 
-if [ $stayAwake == true ]; then
+if [ "$stayAwake" == "true" ]; then
     awake=1
 fi
 
 if [ "$awake" -eq "1" ]; then
-    case $type in
+    case $capturetype in
         still)
             echo "log=take still image"
             hires=$(./single.sh "$zzz" | awk '{print $1}')
@@ -73,6 +81,8 @@ if [ "$awake" -eq "1" ]; then
             hires=$(./bracket.sh \
                 -p $dest \
                 -n "bracket-$hms" \
+                -e "$encoding" \
+                -b "$bracket" \
                 -s $seq \
                 | awk '{print $1}')
             ;;
@@ -86,17 +96,20 @@ else
 fi
 
 finish=`date +%s`
-runtime=$((finish-begin))
+runtime=$(( $finish - $begin ))
 
 echo "log=update stats"
 response=$(./stats.sh $zzz $runtime)
 echo $response
 
 echo "log=snooze ... $zzz"
-sleep "${zzz}s"
+sleep $zzz
 
 echo "log=delete cache"
-rm $relativeStats
+echo "" > $relativeStats
+# rm $relativeStats
 
-echo "log=re-capture loop"
-./capture.sh "$type"
+if [ "$forcereload" == "false" ]; then
+    echo "log=capture;creating new thread"
+    ./capture.sh
+fi

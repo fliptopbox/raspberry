@@ -77,5 +77,9 @@ payload+="&settingsRotation=$rotation"
 payload+="&settingsSaturation=$saturation"
 payload+="&settingsSharpness=$sharpness"
 
+payload+="&settingsReduction=$reduction"
+payload+="&settingsPreview=$preview"
+payload+="&settingsBracket=$bracket"
+
 echo $payload > ${log}
 echo $payload
