@@ -13,28 +13,30 @@ relativeStats="$relativeData/stats.v2.txt"
 intervalMinutes=1
 
 # UI editable settings
-
-# camera arguments
+# camera - ENUM list values
+awb=off
+drc=high
 encoding=jpg
 exposure=off
-ev=0
-awb=off
-sharpness=0
-contrast=0
-saturation=25
-brightness=50
 imxfx=none
 metering=average
-rotation=0
-drc=off
-ISO=600
+
+# camera - primitive values
+ISO=50
+brightness=50
+contrast=0
+ev=0
+interval=360
 quality=100
+rotation=0
+saturation=26
+sharpness=0
 
 
 # proxy settings
-stayAwake=true
-sleepInterval=30
-jpgQuality=100
+stayAwake=false
+sleepInterval=$interval
+jpgQuality=$quality
 cameraTimeout=3 # as seconds
 resizeAmount=3
 
