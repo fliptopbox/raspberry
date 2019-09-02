@@ -110,6 +110,11 @@ echo "" > $relativeStats
 # rm $relativeStats
 
 if [ "$forcereload" == "false" ]; then
+    # TODO seperate capture and backup routines
+    ./backup.sh &
+
     echo "log=capture;creating new thread"
     ./capture.sh
 fi
+
+

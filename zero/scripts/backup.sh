@@ -27,7 +27,7 @@ sed -i  "s/rsyncBackup=.*/rsyncBackup=${today}/g" config.sh
 
 
 
-# Keep one day of images (ie today)
+# Keep two days of images (ie today, and yesterday)
 today=$(date -u +"%Y/%m/%d/") # UTC date
 yesterday=$(date -u -d "yesterday" +"%Y/%m/%d/") # UTC date
 
