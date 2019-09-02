@@ -20,9 +20,14 @@ cpu=$(ps -eo pcpu,cmd | sort -k 1 -r | head -20 | awk '{s+=$1} END {print s}')
 
 
 # the imageResize image low-res & original path
+capturetype="still"
+if [ $bracket -gt 0 ]; then
+    capturetype="bracket"
+fi
+
 imageResize=$(find "$relativeCurrent/" -regex ".*jpg$" -ls | awk '{print $11}' | sort | tail -1)
-imageFullsize=$(find "$relativeStills/" -regex ".*jpg$" -ls | awk '{print $11}' | sort | tail -1)
-imageCount=$(find "$relativeStills/" -regex ".*jpg$" | wc | awk '{print $1}')
+imageFullsize=$(find "$relativeImages/$capturetype/" -regex ".*jpg$" -ls | awk '{print $11}' | sort | tail -1)
+imageCount=$(find "$relativeImages/" -regex ".*jpg$" | wc | awk '{print $1}')
 
 
 
