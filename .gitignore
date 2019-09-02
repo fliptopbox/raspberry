@@ -5,3 +5,4 @@ tags
 images/
 */data/
 .DS*
+*.vim
