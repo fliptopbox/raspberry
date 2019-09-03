@@ -27,11 +27,11 @@ Essentially this project is a time-lapse utility, accessible via a browser, to c
 
 ### Main interface
 
-![pi-spy-interface](./docs/images/greeting.jpg)
+![pi-spy-interface](./docs/assets/greeting.jpg)
 
 **Icons from left to right:** settings menu, composition grid, last image time, progress bar, interval value, sunrise time, sunset time, disk usage, image count, recording status.
 
 ### Camera settings
 
-![pi-spy-settings](./docs/images/settings.jpg)
+![pi-spy-settings](./docs/assets/settings.jpg)
 
