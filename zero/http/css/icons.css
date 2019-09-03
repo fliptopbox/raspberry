@@ -119,6 +119,7 @@
     position: relative;
     border: 0.1em solid #fff;
     border-radius: 1em;
+    background: #111;
 }
 
 .clock {
@@ -204,8 +205,8 @@
 .moon {
     background: radial-gradient(
         ellipse at 38% 38%,
-        #000000 50%,
-        #000000 50%,
+        #111 50%,
+        #111 50%,
         #ffffff 60%
     );
     border-radius: 1em;
@@ -219,12 +220,13 @@
         #FFFFFF 65%
     );
     border-radius: 1em;
-    border: 0.1em dotted black;
+    border: 0.12em dotted black;
 }
 .picture {
     position: relative;
     border: 0.1em solid white;
-    background: balck;
+    background: #111;
+    overflow: hidden;
 }
 
 .picture:before {
@@ -238,6 +240,7 @@
     border: 0 solid white;
     border-radius: 0 0.3em 0 0;
     border-width: 0.1em 0.1em 0 0;
+    background: #666;
 }
 
 .picture:after {
@@ -418,3 +421,81 @@
 .close:after {
     transform: rotate(90deg);
 }
+
+.bracket {
+    border: 0.1em solid white;
+    border-width: 0.1em 0 0.1em 0.1em;
+    text-align: center;
+    font-weight: 900;
+    width: 1.5em;
+}
+.bracket em {
+    font-size: 0.6em;
+    width: 1.1em;
+    display: block;
+    color: #ffffff52;
+    font-style: normal;
+    font-family: arial;
+    padding: 0.1em 0 0 0.04em;
+    text-align: center;
+}
+.bracket:after {
+    position: absolute;
+    top: 0.1em;
+    right: 0.56em;
+    content: "";
+    width: 0.1em;
+    bottom: 0.1em;
+    display: block;
+    background: white;
+    box-shadow: 0.25em 0 0 0 white,
+        0.5em 0 0 0 white;
+}
+
+:root {
+    --pie-start: 90deg;
+    --pie-color: green;
+    --pie-border: white;
+}
+
+.pie {
+    background: conic-gradient(
+        var(--pie-color) var(--pie-percent),
+        #333 var(--pie-percent));
+    border-radius: 1em;
+    /* border: 0.08em solid white; */
+}
+.pie:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    content: "";
+    width: 0.5em;
+    height: 0.5em;
+    background: #111;
+    border-radius: 100%;
+}
+
+
+.disk:before {
+    position: absolute;
+    top: 0.1em;
+    content: "";
+    width: 80%;
+    height: 0.3em;
+    background: white;
+    border-radius: 100%;
+
+    box-shadow: 
+        0 0.1em 0 0 black,
+        0 0.2em 0 0 white,
+        0 0.3em 0 0 black,
+        0 0.4em 0 0 white,
+        0 0.5em 0 0 white,
+        0 0.6em 0 0 white
+    ;
+}
+
