@@ -39,8 +39,8 @@ payload+="&timestamp=${datetime}Z"
 
 payload+="&diskDevice=$(echo $disk | awk '{print $1}')"
 payload+="&diskTotal=$(echo $disk | awk '{print $2}')"
-payload+="&diskAvail=$(echo $disk | awk '{print $3}')"
-payload+="&diskUsed=$(echo $disk | awk '{print $4}')"
+payload+="&diskAvail=$(echo $disk | awk '{print $4}')"
+payload+="&diskUsed=$(echo $disk | awk '{print $3}')"
 payload+="&diskPercent=$(echo $disk | awk '{print $5}')"
 
 payload+="&timeSunrise=$(echo $daytime | awk '{print $2}')"
@@ -78,6 +78,7 @@ payload+="&settingsReduction=$reduction"
 payload+="&settingsBracket=$bracket"
 
 payload+="&settingsPreview=$preview"
+payload+="&settingsContinuous=$continuous"
 
 finish=`date +%s`
 localTime=$((finish-begin))

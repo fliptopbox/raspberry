@@ -48,6 +48,7 @@ case $KEY in
         ;;
 
     preview|\
+    continuous|\
     stayawake)
 
         TEMP=false

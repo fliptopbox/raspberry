@@ -15,14 +15,13 @@ if [ $bracket -gt 0 ]; then
     capturetype="bracket"
 fi
 
+# the destingation folder (still|bracket)
 root="$relativeImages/$capturetype/"
 
-# Sleep time in seconds
-zzz="$sleepInterval"
 
 if [ "$1" == "force" ]; then
     forcereload=true
-    echo "" > $relativeStats
+    rm $relativeStats
     echo "log=capture;force reload"
 fi
 
@@ -31,7 +30,7 @@ fi
 # 2. output the existing stats.txt (ie cache)
 # 3. sleep until the current cache expires
 
-if [ $forcereload == false ] && [ -f "$relativeStats" ]; then
+if [ -f "$relativeStats" ]; then
     now=`date -u +%s`
     expires=$(cat $relativeStats | sed -En "s/(.*)expires=([0-9]+)(.*)/\2/p")
     datediff=$(( expires-now ))
@@ -50,10 +49,10 @@ fi
 refresh=""
 begin=`date +%s`
 today=$(date -u +"%Y/%m/%d/") # UTC date
-dest="$root$today"
+dest="${root}${today}"
 
 if [ ! -d $dest ]; then
-    echo "Creating destination: $dest"
+    echo "log=creating destination: $dest"
     mkdir -p $dest
     refresh="true"
 fi
@@ -69,7 +68,7 @@ if [ "$awake" -eq "1" ]; then
     case $capturetype in
         still)
             echo "log=take still image"
-            hires=$(./single.sh "$zzz" | awk '{print $1}')
+            hires=$(./single.sh "$sleepInterval" | awk '{print $1}')
             ;;
 
         bracket)
@@ -98,15 +97,15 @@ finish=`date +%s`
 runtime=$(( $finish - $begin ))
 
 echo "log=update stats"
-response=$(./stats.sh $zzz $runtime)
+response=$(./stats.sh $sleepInterval $runtime)
 echo $response
 
-echo "log=snooze ... $zzz"
-sleep $zzz
+echo "log=snooze ... $sleepInterval"
+sleep $sleepInterval
 
 echo "log=delete cache"
-echo "" > $relativeStats
-# rm $relativeStats
+# echo "" > $relativeStats
+rm $relativeStats
 
 if [ "$forcereload" == "false" ]; then
     # TODO seperate capture and backup routines

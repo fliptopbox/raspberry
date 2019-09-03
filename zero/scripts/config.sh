@@ -8,7 +8,7 @@ relativeData="../data"
 relativeStats="$relativeData/stats.v2.txt"
 
 # daily maintainance via rsync
-rsyncBackup=20190902
+rsyncBackup=20190903
 rsyncLogin="bruce@lithium"
 rsyncSource="$relativeImages/"
 rsyncDest="Projects/github/raspberry/zero/images"
@@ -38,11 +38,12 @@ sharpness=0
 # helper settings/values
 reduction=3
 preview=false
-bracket=1
+bracket=0
+continuous=false
 
 
 # proxy settings
-stayAwake=false
+stayAwake=$continuous
 sleepInterval=$interval
 jpgQuality=$quality
 cameraTimeout=$timeout
