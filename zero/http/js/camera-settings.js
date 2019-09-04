@@ -154,6 +154,18 @@ export default {
             return `${perc}%`;
         }
     },
+    continuous: {
+        name: "Work hours",
+        min: 0,
+        max: 1,
+        value: 0,
+        enum: ["false", "true"],
+        format (value) {
+            console.log(value);
+            const bool = /^true/i.test(value);
+            return bool ? "Day & Night" : "Dawn to Dusk";
+        }
+    },
     preview: {
         min: 0,
         max: 1,

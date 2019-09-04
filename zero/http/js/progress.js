@@ -2,19 +2,21 @@ import TTL from './ttl.js';
 
 export default progress;
 function progress(next) {
-    const { remainder = null, totaltime } = TTL(next);
+    const { remainder = null, totaltime, active } = TTL(next);
 
     if (!remainder) return;
 
     const width = 100 - (remainder / totaltime) * 100;
 
-    return render(width, remainder);
+    return render(width, remainder, active);
 }
 
-function render(width, remainder) {
+function render(width, remainder, active) {
     const el = getElement();
 
     el.classList.remove('go');
+    el.classList.add(active ? "online" : "offline");
+
     el.style.display = 'block';
     el.style.setProperty('--width', `${width}%`);
     el.style.setProperty('--ms-delay', `${remainder}ms`);

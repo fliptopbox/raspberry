@@ -5,7 +5,7 @@ function ttl (next) {
     const { UTC, stayawake, sunrise, sunset } = time;
     const active = (UTC > sunrise && UTC < sunset) || stayawake;
 
-    if (!active) return {};
+    // if (!active) return {};
 
     const [yyyy, mm, dd, hh, mn, ss] = new Date(timestamp)
         .toISOString()
@@ -26,6 +26,7 @@ function ttl (next) {
         modified,
         expires,
         totaltime,
-        remainder
+        remainder,
+        active
     }
 }

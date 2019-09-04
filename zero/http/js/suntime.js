@@ -1,6 +1,6 @@
 export default suntime;
 function suntime({ time }) {
-    let { sunset, sunrise } = time;
+    let { sunset, sunrise, stayawake } = time;
     const hhmm = /(\d+:\d+)/g;
     sunset = new Date(sunset).toString().match(hhmm)[0];
     sunrise = new Date(sunrise).toString().match(hhmm)[0];
@@ -15,7 +15,7 @@ function suntime({ time }) {
             <span class="text">${sunset}</span>
         </div>
     `;
-    return html;
+    return stayawake ? "" : html;
 }
 
 
