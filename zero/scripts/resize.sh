@@ -40,6 +40,11 @@ raspistill \
 
 # Delete older files AFTER we have a replacement
 count=`ls $relativeCurrent/*.jpg | wc -l`
-rm `ls -tr $relativeCurrent/*.jpg | head -$(( $count-1 ))` 
+count=$(( $count-1 ))
+
+if [[ $count -gt 0 ]]; then
+    echo "log=resize;delete count:$count"
+    rm `ls -tr $relativeCurrent/*.jpg | head -$count`
+fi
 
 # echo ">> $resizedImage"

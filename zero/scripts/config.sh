@@ -8,7 +8,7 @@ relativeData="../data"
 relativeStats="$relativeData/stats.v2.txt"
 
 # daily maintainance via rsync
-rsyncBackup=20190903
+rsyncBackup=20190904
 rsyncLogin="bruce@lithium"
 rsyncSource="$relativeImages/"
 rsyncDest="Projects/github/raspberry/zero/images"

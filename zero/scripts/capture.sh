@@ -3,8 +3,16 @@
 
 . config.sh
 
+# Some UI events force a reload but
+# interupting the loop should not
+# create an additional thread!
 
 forcereload=false
+if [ "$1" == "force" ]; then
+    forcereload=true
+    echo "log=capture;force reload"
+    echo "" > $relativeStats
+fi
 
 # Image destination (relative)
 # The destination sub-directory
@@ -19,24 +27,23 @@ fi
 root="$relativeImages/$capturetype/"
 
 
-if [ "$1" == "force" ]; then
-    forcereload=true
-    rm $relativeStats
-    echo "log=capture;force reload"
-fi
 
 # if the stats file already exist ...
 # 1. then check the expires date, 
 # 2. output the existing stats.txt (ie cache)
 # 3. sleep until the current cache expires
 
-if [ -f "$relativeStats" ]; then
+if [ -f $relativeStats ]; then
     now=`date -u +%s`
     expires=$(cat $relativeStats | sed -En "s/(.*)expires=([0-9]+)(.*)/\2/p")
     datediff=$(( expires-now ))
+    pause=$([[ $expires -gt 0  && $datediff -gt 0 ]] && echo 1 || echo 0)
 
+    echo "log=capture;pause=$pause"
+    echo "log=capture;expires=$expires"
+    echo "log=capture;datediff=$datediff"
 
-    if [ $datediff -gt 0 ]; then
+    if [[ $pause -gt 0 ]]; then
         echo "log=using cache"
         echo -e `cat $relativeStats`
 
@@ -46,15 +53,19 @@ if [ -f "$relativeStats" ]; then
 fi
 
 
-refresh=""
 begin=`date +%s`
 today=$(date -u +"%Y/%m/%d/") # UTC date
 dest="${root}${today}"
 
+refresh=false
 if [ ! -d $dest ]; then
     echo "log=creating destination: $dest"
     mkdir -p $dest
-    refresh="true"
+    refresh=true
+
+    # TODO seperate backup routine
+    ./backup.sh &
+
 fi
 
 daytime=$(./day_time.sh $refresh)
@@ -100,19 +111,18 @@ echo "log=update stats"
 response=$(./stats.sh $sleepInterval $runtime)
 echo $response
 
-echo "log=snooze ... $sleepInterval"
-sleep $sleepInterval
 
-echo "log=delete cache"
-# echo "" > $relativeStats
-rm $relativeStats
-
-if [ "$forcereload" == "false" ]; then
-    # TODO seperate capture and backup routines
-    ./backup.sh &
-
-    echo "log=capture;creating new thread"
-    ./capture.sh
+if [[ $forcereload == true ]]; then
+    echo "log=capture;exiting thread ($forcereload)"
+    exit
 fi
 
 
+echo "log=snooze ... $sleepInterval"
+sleep "$sleepInterval"
+
+echo "log=delete cache"
+echo "" > $relativeStats
+
+echo "log=capture;creating new thread"
+./capture.sh

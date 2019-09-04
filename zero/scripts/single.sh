@@ -19,7 +19,6 @@ delay=$1
 
 mkdir -p $dest
 
-free=`df -h | grep /dev/root | sed -E 's/.*\s([0-9]+%).*/\1/g'`
 
 # Derive the last frame number
 next=$(./next_frame.sh | awk '{print $1}')
@@ -48,4 +47,4 @@ raspistill \
     -q $quality
 
 now=$(date -u +"%H:%M:%S") # UTC date
-echo "$nextfile ($free) $now ${delay}s"
+echo "$nextfile $now ${delay}s"
