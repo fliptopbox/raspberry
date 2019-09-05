@@ -2,15 +2,16 @@
 
 relativeImages="../images"
 relativeStills="$relativeImages/still"
+relativeBracket="$relativeImages/bracket"
 relativeCurrent="$relativeImages/current"
 
 relativeData="../data"
 relativeStats="$relativeData/stats.v2.txt"
 
 # daily maintainance via rsync
-rsyncBackup=20190904
-rsyncLogin="bruce@lithium"
-rsyncSource="$relativeImages/"
+rsyncBackup=20190905
+rsyncLogin="pi@iodine"
+rsyncSource="$relativeImages"
 rsyncDest="Projects/github/raspberry/zero/images"
 
 

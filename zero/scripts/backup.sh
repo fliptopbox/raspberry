@@ -28,25 +28,34 @@ sed -i  "s/rsyncBackup=.*/rsyncBackup=${today}/g" config.sh
 
 
 # Keep two days of images (ie today, and yesterday)
-today=$(date -u +"%Y/%m/%d/") # UTC date
-yesterday=$(date -u -d "yesterday" +"%Y/%m/%d/") # UTC date
+today=$(date -u +"%Y/%m/%d") # UTC date
+yesterday=$(date -u -d "yesterday" +"%Y/%m/%d") # UTC date
 
-echo "log=backup;ok;date=$today"
 
 dst="$rsyncLogin:$rsyncDest"
 echo "log=backup;ok;dst=$dst"
 
 src="$rsyncSource/"
-echo "log=backup;ok;src=$src"
+echo "log=backup;src=$src"
 
 # REMEMBER ... using rsync with the dry-run (n) flag and 
 # --remove-source-files, together causes the rsync on MacOS to fail
 
+[ "$bracket" -gt 0 ] && activeDest="bracket" || activeDest="still"
+
+exclToday="$activeDest/$today"
+exclYesterday="$activeDest/$yesterday"
+exclCurrent="current/"
+
+echo "log=backup;exclude=$exclCurrent"
+echo "log=backup;exclude=$exclToday"
+echo "log=backup;exclude=$exclYesterday"
+
 rsync -ruvz \
     --remove-source-files \
-    --exclude $relativeCurrent \
-    --exclude $yesterday \
-    --exclude $today \
+    --exclude $exclCurrent \
+    --exclude $exclToday \
+    --exclude $exclYesterday \
     $src \
     $dst
 
